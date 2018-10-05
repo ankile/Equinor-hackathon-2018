@@ -5,7 +5,6 @@
 #   def adjacent_to(src)
 #   def distance(src, dst)
 import heapq as h
-import math
 
 class ManhattanGraph:
     """
@@ -72,7 +71,7 @@ def shortest_path(graph, source, destination, count = 1, exploration_factor = 1)
 
     # A 2d array of the least costs so far.
     (size_x, size_y) = graph.size()
-    least_costs = [[math.inf for x in range(size_x)] for y in range(size_y)]
+    least_costs = [[float('inf') for x in range(size_x)] for y in range(size_y)]
     least_costs[source[1]][source[0]]
 
     while len(optimal_paths) < count and heap:
