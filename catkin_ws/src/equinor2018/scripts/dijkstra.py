@@ -102,10 +102,19 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
 
     return optimal_paths[0].as_list()
 
-def shortest_path(graph, source, destination):
-    pass
-    # We'll only keep the cornersrners of the pat
 
 def shift_reference_point(paths):
     return [(x + 0.5, y + 0.5) for (x, y) in paths]
+
+def shortest_path(graph, source, destination):
+    unfiltered = unfiltered_shortest_path(graph, source, destination)
+    should_be_removed = [true]
+
+    for i in range(1, len(unfiltered) - 1):
+        should_be_removed.append(unfiltered[i - 1][0] == unfiltered[i][0] == unfiltered[i + 1][0] or unfilterd[i - 1][1] == unfiltered[i][1] == unfiltered[i + 1][1])
+
+
+    filtered = [unfiltered[i] for i in range(len(unfiltered)) if not should_be_removed[i]]
+
+    return shift_reference_point(paths)
 
