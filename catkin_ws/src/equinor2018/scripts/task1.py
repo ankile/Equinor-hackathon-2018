@@ -58,6 +58,7 @@ def main():
     
     #Create rate limiter
     rate = rospy.Rate(30)
+    target_set = False
     while not rospy.is_shutdown():
         rate.sleep()
         #Do stuff
