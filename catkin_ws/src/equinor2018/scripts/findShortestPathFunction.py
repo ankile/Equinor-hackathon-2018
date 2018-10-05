@@ -167,12 +167,12 @@ def clean_my_point_array(input_array):
 def find_shortest_path(map,start_point, end_point):
     setup_of_lenght_map(map)
     len_map = setup_of_lenght_map(map)
-    #print("These should be the same")
-    #print(len(map))
-    #print(len(map[0]))
-    #print("as these:")
-    #print(len(len_map))
-    # print(len(len_map[0]))
+    print("These should be the same")
+    print(len(map))
+    print(len(map[0]))
+    print("as these:")
+    print(len(len_map))
+    print(len(len_map[0]))
     paths_array = [PointPath(start_point[0], start_point[1], [])]
 
     winner_paths = []
@@ -186,8 +186,8 @@ def find_shortest_path(map,start_point, end_point):
             new_paths = path.get_all_new_points(map)
 
             for path in new_paths:
-                #print(path.y_cordinate)
-                #print(path.x_cordinate)
+                print(path.y_cordinate)
+                print(path.x_cordinate)
                 if path.get_path_length() < len_map[path.y_cordinate][path.x_cordinate]:
 
                     for point in path.previous_points:
@@ -206,5 +206,9 @@ def find_shortest_path(map,start_point, end_point):
     newPoint.append(winner_paths[len(winner_paths) - 1].x_cordinate)
     newPoint.append(winner_paths[len(winner_paths) - 1].y_cordinate)
     winner_paths[len(winner_paths) - 1].previous_points.append(newPoint)
-    return clean_my_point_array(winner_paths[len(winner_paths) - 1].previous_points)
+    #clean_my_point_array(winner_paths[len(winner_paths) - 1].previous_points)
+    return winner_paths[len(winner_paths) - 1].previous_points
+
+
+
 
