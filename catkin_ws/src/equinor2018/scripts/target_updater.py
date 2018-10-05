@@ -13,7 +13,6 @@ class TargetUpdater:
 
         self.goal = goal
 
-        if
         self.path = None
         self.current_target = None
 
