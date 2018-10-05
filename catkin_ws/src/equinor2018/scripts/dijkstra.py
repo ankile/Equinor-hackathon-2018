@@ -117,5 +117,5 @@ def shortest_path(graph, source, destination):
 
     filtered = [unfiltered[i] for i in range(len(unfiltered)) if not should_be_removed[i]]
 
-    return shift_reference_point(filtered)
+    return shift_reference_point(unfiltered)
 
