@@ -12,8 +12,8 @@ goal_updated = False
 
 
 def distance(p0, p1):
-    (x0, y0) = (p0.x, p0.y)
-    (x1, y1) = (p1.x, p1.y)
+    (x0, y0) = (p0[0], p0[1])
+    (x1, y1) = (p1[0], p1[1])
     return ((x0 - x1)**2 + (y0 - y1)**2) ** 0.5
 
 
@@ -103,9 +103,8 @@ def main():
         if not path or not goal:
             continue
 
-        g = (goal.x, goal.y)
-
-        if distance(pos, g) < 0.4:
+        waypoint = path[0]
+        if distance((pos.x, pos.y), waypoint) < 0.4:
             (x, y) = path[0]
             path = path[1:]
             dron.set_target(x, y, 0)
