@@ -28,7 +28,7 @@ def parseMap(msg):
 
 def main():
     #Init ROS node
-    rospy.init_node('task1', anonymous=True)
+    rospy.init_node('task3', anonymous=True)
     
     #Create subscriber for position and goal
     rospy.Subscriber('/mavros/local_position/pose', PoseStamped, dronePoseCallback)
