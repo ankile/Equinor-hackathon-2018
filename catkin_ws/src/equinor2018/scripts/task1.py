@@ -91,7 +91,7 @@ def main():
             src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
-            path = find_shortest_path(world_map, src, dst)#shortest_path(graph, src, dst)[0]
+            path = shortest_path(graph, src, dst)
             path[-1] = (goal.x, goal.y)
             #path = shift_reference_point(path)
             print("Path: " + str(path))
