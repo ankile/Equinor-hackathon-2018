@@ -61,6 +61,9 @@ def main():
     while not rospy.is_shutdown():
         rate.sleep()
         #Do stuff
+        if not target_set and pos.z > 0.5:
+            drone.set_target(pos.x + 2.0, pos.y, 0.0)
+            target_set = True
 
 
 if __name__ == '__main__':
