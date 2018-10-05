@@ -91,7 +91,6 @@ def main():
             dst = (int(goal.x), int(goal.y))
 
             path = shortest_path(graph, src, dst)[0]
-            path[0] = (pos.x, pos.y)
             path[-1] = (goal.x, goal.y)
             print("Path: " + str(path))
             (x, y) = path[0]
