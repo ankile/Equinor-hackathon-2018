@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+"""
 class TargetUpdater:
     def __init__(self, world_graph):
         self.world_graph = world_graph
@@ -17,6 +17,7 @@ class TargetUpdater:
         self.current_target = None
 
     def has_new_target(self, drone_x, drone_y):
+        pass
 
 
     def should_move_to_next_target(self, x0, y0):
@@ -37,3 +38,4 @@ class TargetUpdater:
         self.path = self.path[1:]
 
         return next
+"""
