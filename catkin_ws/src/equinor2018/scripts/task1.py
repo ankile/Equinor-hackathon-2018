@@ -2,11 +2,14 @@
 
 import rospy
 import drone
+import target_updater
+import dijkstra
 from geometry_msgs.msg import PoseStamped, Point, Pose
 from ascend_msgs.srv import GlobalMap
 
 current_pose = PoseStamped()  # geometry_msgs::PoseStamped
 goal = Point()  # geometry_msgs::Point
+
 
 
 def dronePoseCallback(msg):
@@ -52,24 +55,35 @@ def main():
     # Initialize drone
     drone.init()
 
+    # Construct a path from the world_map
+    graph = ManhattanGraph(world_map)
+    pos0 = (current_pose.pose.position.x, current_pose.pose.position.y)
+    optimal_path = shortest_path(graph, pos0, )
+
     # Arm and set offboard
     drone.block_until_armed_and_offboard()
 
     # Takeoff
     drone.takeoff()
 
+    # Used to determine whether or not to proceed to the next target
+    target_updater = TargetUpdater()
+
     # Create rate limiter
     rate = rospy.Rate(30)
-    target_set = False
     while not rospy.is_shutdown():
         rate.sleep()
         # Do stuff
 
         pos = current_pose.pose.position
 
-        if not target_set and pos.z > 0.5:
-            drone.set_target(pos.x + 2.0, pos.y, 0.0)
-            target_set = True
+        if not target_updater.should_move_to_next_target(pos.x, pos.y):
+            continue
+
+
+        (x, y) = target_updater.next_target()
+        print(f'Updating target to ({x}, {y})')
+        drone.set_target(x, y, 0)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # class Graph:
 #   def size()
 #   def adjacent_to(src)

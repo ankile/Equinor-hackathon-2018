@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 class TargetUpdater:
     def __init__(self, path):
