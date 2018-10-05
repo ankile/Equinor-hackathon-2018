@@ -68,7 +68,6 @@ def main():
 
     # Get map as 2D list
     world_map = parseMap(raw_map)
-    print(world_map)
     # Set the global map_graph
     world_graph = ManhattanGraph(world_map)
 
