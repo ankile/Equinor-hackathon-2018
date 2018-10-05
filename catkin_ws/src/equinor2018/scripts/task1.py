@@ -31,7 +31,7 @@ def goalCallback(msg):
         pos1 = (int(goal.x), int(goal.y))
         print("Computing shortest path...")
         target_updater = TargetUpdater(shift_reference_point(shortest_path(world_graph, pos0, pos1)[0]))
-        drone.set_target(target_updater.path[0], 0)
+        drone.set_target(pos0[0], pos0[1], 0)
         print("Computed shortest path! =", target_updater.path)
 
 
