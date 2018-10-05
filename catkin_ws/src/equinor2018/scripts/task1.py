@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import rospy
 import drone
@@ -82,7 +82,7 @@ def main():
 
 
         (x, y) = target_updater.next_target()
-        print(f'Updating target to ({x}, {y})')
+        print('Updating target to (' + x + ', ' + y + ')')
         drone.set_target(x, y, 0)
 
 
