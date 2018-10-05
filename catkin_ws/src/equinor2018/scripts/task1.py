@@ -25,6 +25,8 @@ def goalCallback(msg):
     global target_updater
     global world_graph
     print("Goal callback called with", goal)
+    print("Goal:", goal.x, goal.y)
+    print("Target:", target_updater.path[0][0], target_updater.path[0][0])
     if msg.position != goal and world_graph is not None:
         goal = msg.position
         pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
