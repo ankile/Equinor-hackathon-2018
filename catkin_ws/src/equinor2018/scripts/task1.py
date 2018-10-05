@@ -10,6 +10,9 @@ from ascend_msgs.srv import GlobalMap
 current_pose = PoseStamped()  # geometry_msgs::PoseStamped
 goal = Point()  # geometry_msgs::Point
 
+world_graph = None
+target_updater = TargetUpdater([])
+
 
 
 def dronePoseCallback(msg):
@@ -19,7 +22,16 @@ def dronePoseCallback(msg):
 
 def goalCallback(msg):
     global goal
+    global target_updater
+    global world_graph
+
+    print("Goal callback called with", goal)
     goal = msg.position
+    pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
+    pos1 = (goal.x, goal.y)
+    print("Computing shortest path...")
+    target_updater = TargetUpdater(shortest_path(world_graph, pos0, pos1))
+    print("Computed shortest path! =", target_updater.path)
 
 
 def parseMap(msg):
@@ -32,6 +44,8 @@ def parseMap(msg):
 
 
 def main():
+    global map_graph
+    global target_updater
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
 
@@ -51,23 +65,17 @@ def main():
 
     # Get map as 2D list
     world_map = parseMap(raw_map)
+    # Set the global map_graph
+    world_graph = ManhattanGraph(world_map)
 
     # Initialize drone
     drone.init()
-
-    # Construct a path from the world_map
-    graph = ManhattanGraph(world_map)
-    pos0 = (current_pose.pose.position.x, current_pose.pose.position.y)
-    optimal_path = shortest_path(graph, pos0, )
 
     # Arm and set offboard
     drone.block_until_armed_and_offboard()
 
     # Takeoff
     drone.takeoff()
-
-    # Used to determine whether or not to proceed to the next target
-    target_updater = TargetUpdater()
 
     # Create rate limiter
     rate = rospy.Rate(30)
