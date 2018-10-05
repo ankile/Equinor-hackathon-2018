@@ -26,12 +26,13 @@ def goalCallback(msg):
     global world_graph
 
     print("Goal callback called with", goal)
-    goal = msg.position
-    pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
-    pos1 = (goal.x, goal.y)
-    print("Computing shortest path...")
-    target_updater = TargetUpdater(shortest_path(world_graph, pos0, pos1))
-    print("Computed shortest path! =", target_updater.path)
+    if msg.position != goal.position:
+        goal = msg.position
+        pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
+        pos1 = (int(goal.x), int(goal.y))
+        print("Computing shortest path...")
+        target_updater = TargetUpdater(shift_reference_point(shortest_path(world_graph, pos0, pos1)))
+        print("Computed shortest path! =", target_updater.path)
 
 
 def parseMap(msg):
@@ -44,7 +45,7 @@ def parseMap(msg):
 
 
 def main():
-    global map_graph
+    global world_graph
     global target_updater
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
