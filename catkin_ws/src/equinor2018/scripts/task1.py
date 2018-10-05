@@ -9,9 +9,13 @@ from ascend_msgs.srv import GlobalMap
 
 current_pose = PoseStamped()  # geometry_msgs::PoseStamped
 goal = Point()  # geometry_msgs::Point
+goal_updated = false
 
-world_graph = None
-target_updater = TargetUpdater([])
+
+def distance(p0, p1):
+    (x0, y0) = (p0.x, p0.y)
+    (x1, y1) = (p1.x, p1.y)
+    return ((x0 - x1)**2 + (y0 - y1)**2) ** 0.5
 
 
 
@@ -22,20 +26,10 @@ def dronePoseCallback(msg):
 
 def goalCallback(msg):
     global goal
-    global target_updater
-    global world_graph
-    print("Goal callback called with", goal)
-    print("Goal:", goal.x, goal.y)
-    if msg.position != goal and world_graph is not None:
-        goal = msg.position
-        pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
-        pos1 = (int(goal.x), int(goal.y))
-        print("Computing shortest path...")
-        target_updater = TargetUpdater(shift_reference_point(shortest_path(world_graph, pos0, pos1)[0]))
-        drone.set_target(pos0[0], pos0[1], 0)
-        print("Computed shortest path! =", target_updater.path)
+    global goal_updated
 
-    print("Target:", target_updater.path[0][0], target_updater.path[0][0])
+    goal = msg.position
+    goal_updated = true
 
 
 def parseMap(msg):
@@ -48,8 +42,8 @@ def parseMap(msg):
 
 
 def main():
-    global world_graph
-    global target_updater
+    global goal
+    global goal_updated
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
 
@@ -69,8 +63,10 @@ def main():
 
     # Get map as 2D list
     world_map = parseMap(raw_map)
-    # Set the global map_graph
-    world_graph = ManhattanGraph(world_map)
+    # Construct a graph from the world map
+    graph = ManhattanGraph(world_map)
+    # The current path
+    path = []
 
     # Initialize drone
     drone.init()
@@ -87,15 +83,32 @@ def main():
         rate.sleep()
         # Do stuff
 
-        pos = current_pose.pose.position
+        pos = (current_pose.pose.position.x, current_pose.pose.y)
 
-        if not target_updater.should_move_to_next_target(pos.x, pos.y):
+        if goal_updated:
+            print ("Goal updated")
+            src = (int(pos[0]), int(pos[1]))
+            dst = (int(goal.x), int(goal.y))
+
+            path = shortest_path(graph, src, dst)
+            path[0] = pos
+            path[-1] = (goal.x, goal.y)
+
+            (x, y) = path[0]
+            path = path[1:]
+            drone.set_target(x, y, 0)
+            print("Target set to " + str(x) + ", " + str(y))
+
+        if not path or not goal:
             continue
 
+        g = (goal.x, goal.y)
 
-        (x, y) = target_updater.next_target()
-        print('Updating target to (' + x + ', ' + y + ')')
-        drone.set_target(x, y, 0)
+        if distance(pos, g) < 0.4:
+            (x, y) = path[0]
+            path = path[1:]
+            dron.set_target(x, y, 0)
+            print("Target set to ", x, y)
 
 
 if __name__ == '__main__':
