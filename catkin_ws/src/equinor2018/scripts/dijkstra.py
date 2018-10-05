@@ -21,7 +21,7 @@ class ManhattanGraph:
         (x, y) = node
         coords = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
 
-        return [(x, y) for (x, y) in coords if 0 <= x < size_x and 0 <= y < size_y and (self.grid[y][x] == 0 or self.grid[y][x] == '\x00')
+        return [(x, y) for (x, y) in coords if 0 <= x < size_x and 0 <= y < size_y and (self.grid[y][x] == 0 or self.grid[y][x] == '\x00')]
 
     def cost(self, src, dst):
         (x0, y0) = src
