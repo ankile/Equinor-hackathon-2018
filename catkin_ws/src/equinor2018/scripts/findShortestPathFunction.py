@@ -206,13 +206,9 @@ def find_shortest_path(map,start_point, end_point):
     newPoint.append(winner_paths[len(winner_paths) - 1].x_cordinate)
     newPoint.append(winner_paths[len(winner_paths) - 1].y_cordinate)
     winner_paths[len(winner_paths) - 1].previous_points.append(newPoint)
-    return clean_my_point_array(winner_paths[len(winner_paths) - 1].previous_points)
+    #clean_my_point_array(winner_paths[len(winner_paths) - 1].previous_points)
+    return winner_paths[len(winner_paths) - 1].previous_points
 
 
 
 
-the_answer = find_shortest_path([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],[0, 0], [5, 0])
-
-for point in the_answer:
-    print(point)
-    print("->")
