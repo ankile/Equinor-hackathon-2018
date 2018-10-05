@@ -104,7 +104,7 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
 
 
 def shift_reference_point(paths):
-    return [(x + 0.5, y - 0.5) for (x, y) in paths]
+    return [(x - 0.5, y - 0.5) for (x, y) in paths]
 
 def shortest_path(graph, source, destination):
     unfiltered = unfiltered_shortest_path(graph, source, destination)
