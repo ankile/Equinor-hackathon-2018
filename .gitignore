@@ -1,0 +1,8 @@
+.catkin_workspace
+build/
+devel/
+install/
+equinor_hackathon_px4/
+PX4_2017/
+Task2/Data/
+Task2/unlabeledData/
