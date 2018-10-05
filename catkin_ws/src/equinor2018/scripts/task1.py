@@ -9,7 +9,7 @@ from ascend_msgs.srv import GlobalMap
 
 current_pose = PoseStamped()  # geometry_msgs::PoseStamped
 goal = Point()  # geometry_msgs::Point
-goal_updated = false
+goal_updated = False
 
 
 def distance(p0, p1):
@@ -97,6 +97,7 @@ def main():
             (x, y) = path[0]
             path = path[1:]
             drone.set_target(x, y, 0)
+            goal_updated = False
             print("Target set to " + str(x) + ", " + str(y))
 
         if not path or not goal:
