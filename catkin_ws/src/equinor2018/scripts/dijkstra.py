@@ -55,7 +55,7 @@ class RecursivePath:
     def __eq__(self, other):
         return self.cost == other.cost
 
-def shortest_path(graph, source, destination, count = 1, exploration_factor = 1):
+def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_factor = 1):
     """
     :param graph: A graph to traverse
     :param source: The source node as a tuple of (x, y)
@@ -100,7 +100,11 @@ def shortest_path(graph, source, destination, count = 1, exploration_factor = 1)
                 least_costs[y1][x1] = path.cost
                 h.heappush(heap, path)
 
-    return [rpath.as_list() for rpath in optimal_paths]
+    return optimal_paths[0].as_list()
+
+def shortest_path(graph, source, destination):
+    pass
+    # We'll only keep the cornersrners of the pat
 
 def shift_reference_point(paths):
     return [(x + 0.5, y + 0.5) for (x, y) in paths]
