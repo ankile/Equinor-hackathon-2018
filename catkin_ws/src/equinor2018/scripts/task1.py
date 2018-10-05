@@ -84,7 +84,7 @@ def main():
         rate.sleep()
         # Do stuff
 
-        pos = (current_pose.pose.position.x, current_pose.pose.y)
+        pos = (current_pose.pose.position.x, current_pose.pose.position.y)
 
         if goal_updated:
             print ("Goal updated")
