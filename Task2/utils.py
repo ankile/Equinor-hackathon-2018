@@ -18,21 +18,21 @@ def load_labeled_data():
         labels_one_type = [i] * len(images_one_type)
         images += images_one_type
         labels += labels_one_type
-	images,labels = shuffle(images,labels)
-    return images, labels
+    return shuffle(images, labels)
 
 
 def shuffle(images, labels):
-	paired = [(images[i],labels[i]) for i in range (len(images))]
-	result = np.random.shuffle(paired)
-	images = []
-	labels = []
-	for i in range(len(result)):̈́    
-		images.append(result[i][0])
-		labels.append(result[i][1])
-	return images,labels
+    paired = [(images[i], labels[i]) for i in range(len(images))]
+    result = np.random.shuffle(paired)
+    images = []
+    labels = []
+    for i in range(len(result)):
+        images.append(result[i][0])
+    labels.append(result[i][1])
 
-    
+    return images, labels
+
+
 def load_unlabeled_data():
     filenames = glob.glob("unlabeledData/*.jpg")
     return [cv2.imread(img) for img in filenames]
