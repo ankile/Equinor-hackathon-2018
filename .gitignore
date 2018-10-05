@@ -1,4 +1,5 @@
 .catkin_workspace
+.idea/vcs.xml
 build/
 devel/
 install/
