@@ -24,7 +24,7 @@ def goalCallback(msg):
     global goal
     global target_updater
     global world_graph
-    print(current_pose, goal, world_graph, target_updater)
+    print(current_pose, goal, world_graph, target_updater.path)
     print("Goal callback called with", goal)
     if msg.position != goal and world_graph is not None:
         goal = msg.position
@@ -66,6 +66,7 @@ def main():
 
     # Get map as 2D list
     world_map = parseMap(raw_map)
+    print(world_map)
     # Set the global map_graph
     world_graph = ManhattanGraph(world_map)
 
