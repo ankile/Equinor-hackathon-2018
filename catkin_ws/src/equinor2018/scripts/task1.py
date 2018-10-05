@@ -26,7 +26,6 @@ def goalCallback(msg):
     global world_graph
     print("Goal callback called with", goal)
     print("Goal:", goal.x, goal.y)
-    print("Target:", target_updater.path[0][0], target_updater.path[0][0])
     if msg.position != goal and world_graph is not None:
         goal = msg.position
         pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
@@ -35,6 +34,8 @@ def goalCallback(msg):
         target_updater = TargetUpdater(shift_reference_point(shortest_path(world_graph, pos0, pos1)[0]))
         drone.set_target(pos0[0], pos0[1], 0)
         print("Computed shortest path! =", target_updater.path)
+
+    print("Target:", target_updater.path[0][0], target_updater.path[0][0])
 
 
 def parseMap(msg):
