@@ -26,7 +26,7 @@ def goalCallback(msg):
     global world_graph
 
     print("Goal callback called with", goal)
-    if msg.position != goal.position:
+    if msg.position != goal:
         goal = msg.position
         pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
         pos1 = (int(goal.x), int(goal.y))
