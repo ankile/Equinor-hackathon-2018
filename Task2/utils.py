@@ -14,7 +14,7 @@ def load_labeled_data():
 		path = ("Data",str(i),"*.jpg")
 		filenames = glob.glob("/".join(path))
 		images_one_type = [cv2.imread(img) for img in filenames]
-		labels_one_type = [i]*len(images)
+		labels_one_type = [i]*len(images_one_type)
 		images += images_one_type 
 		labels += labels_one_type
 
