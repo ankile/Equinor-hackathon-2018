@@ -28,8 +28,8 @@ def goalCallback(msg):
     global goal
     global goal_updated
 
+    goal_updated = goal_updated || goal == msg.position
     goal = msg.position
-    goal_updated = True
 
 
 def parseMap(msg):
@@ -94,7 +94,7 @@ def main():
             path = shortest_path(graph, src, dst)
             path[0] = pos
             path[-1] = (goal.x, goal.y)
-
+            print("Path: " + str(path))
             (x, y) = path[0]
             path = path[1:]
             drone.set_target(x, y, 0)
