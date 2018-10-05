@@ -27,7 +27,7 @@ def goalCallback(msg):
     global goal
     global goal_updated
 
-    goal_updated = goal_updated or goal == msg.position
+    goal_updated = goal_updated or goal != msg.position
     goal = msg.position
 
 
