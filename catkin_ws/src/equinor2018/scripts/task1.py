@@ -104,6 +104,7 @@ def main():
             continue
 
         waypoint = path[0]
+        print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
         if distance((pos.x, pos.y), waypoint) < 0.4:
             (x, y) = path[0]
