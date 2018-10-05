@@ -106,7 +106,7 @@ def main():
         waypoint = path[0]
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
-        if distance((pos.x, pos.y), waypoint) < 0.4:
+        if distance((pos.x, pos.y), waypoint) < 1:
             (x, y) = path[0]
             path = path[1:]
             drone.set_target(x, y, 0)
