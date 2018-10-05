@@ -167,9 +167,10 @@ def find_shortest_path(map,start_point, end_point):
     winner_paths[len(winner_paths) - 1].previous_points.append(newPoint)
     return winner_paths[len(winner_paths) - 1].previous_points
 
-
+"""
 the_answer = find_shortest_path([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],[0, 0], [5, 4])
 
 for point in the_answer:
     print(point)
     print("->")
+"""

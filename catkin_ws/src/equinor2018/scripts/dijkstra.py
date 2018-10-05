@@ -108,7 +108,7 @@ def shift_reference_point(paths):
 
 def shortest_path(graph, source, destination):
     unfiltered = unfiltered_shortest_path(graph, source, destination)
-    should_be_removed = [true]
+    should_be_removed = [True]
 
     for i in range(1, len(unfiltered) - 1):
         should_be_removed.append(unfiltered[i - 1][0] == unfiltered[i][0] == unfiltered[i + 1][0] or unfilterd[i - 1][1] == unfiltered[i][1] == unfiltered[i + 1][1])
