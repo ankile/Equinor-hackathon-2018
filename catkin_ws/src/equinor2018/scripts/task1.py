@@ -29,7 +29,7 @@ def goalCallback(msg):
     global goal_updated
 
     goal = msg.position
-    goal_updated = true
+    goal_updated = True
 
 
 def parseMap(msg):
@@ -44,6 +44,7 @@ def parseMap(msg):
 def main():
     global goal
     global goal_updated
+    global current_pose
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
 
