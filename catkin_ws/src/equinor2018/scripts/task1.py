@@ -2,7 +2,6 @@
 
 import rospy
 import drone
-from target_updater import *
 from dijkstra import *
 from geometry_msgs.msg import PoseStamped, Point, Pose
 from ascend_msgs.srv import GlobalMap
@@ -84,15 +83,15 @@ def main():
         rate.sleep()
         # Do stuff
 
-        pos = (current_pose.pose.position.x, current_pose.pose.position.y)
+        pos = current_pose.pose.position
 
         if goal_updated:
             print ("Goal updated")
-            src = (int(pos[0]), int(pos[1]))
+            src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
-            path = shortest_path(graph, src, dst)
-            path[0] = pos
+            path = shortest_path(graph, src, dst)[0]
+            path[0] = (pos.x, pos.y)
             path[-1] = (goal.x, goal.y)
             print("Path: " + str(path))
             (x, y) = path[0]
