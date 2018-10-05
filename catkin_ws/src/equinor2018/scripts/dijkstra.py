@@ -102,6 +102,6 @@ def shortest_path(graph, source, destination, count = 1, exploration_factor = 1)
 
     return [rpath.as_list() for rpath in optimal_paths]
 
-def shift_reference_point(path):
+def shift_reference_point(paths):
     return [(x - 0.5, y - 0.5) for (x, y) in paths]
 
