@@ -3,7 +3,7 @@
 import rospy
 import drone
 from target_updater import *
-from target_updater import *
+from dijkstra import *
 from geometry_msgs.msg import PoseStamped, Point, Pose
 from ascend_msgs.srv import GlobalMap
 
