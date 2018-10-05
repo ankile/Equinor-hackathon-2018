@@ -31,7 +31,7 @@ def goalCallback(msg):
         pos0 = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
         pos1 = (int(goal.x), int(goal.y))
         print("Computing shortest path...")
-        target_updater = TargetUpdater(shift_reference_point(shortest_path(world_graph, pos0, pos1)))
+        target_updater = TargetUpdater(shift_reference_point(shortest_path(world_graph, pos0, pos1)[0]))
         print("Computed shortest path! =", target_updater.path)
 
 
