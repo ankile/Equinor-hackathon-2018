@@ -3,6 +3,7 @@
 import rospy
 import drone
 from dijkstra import *
+from findShortestPathFunction import *
 from geometry_msgs.msg import PoseStamped, Point, Pose
 from ascend_msgs.srv import GlobalMap
 
@@ -90,9 +91,9 @@ def main():
             src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
-            path = shortest_path(graph, src, dst)[0]
+            path = find_shortest_path(world_map, src, dst)#shortest_path(graph, src, dst)[0]
             path[-1] = (goal.x, goal.y)
-            path = shift_reference_point(path)
+            #path = shift_reference_point(path)
             print("Path: " + str(path))
             (x, y) = path[0]
             path = path[1:]
