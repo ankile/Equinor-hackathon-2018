@@ -91,12 +91,10 @@ def main():
             src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
-            path = shortest_path(graph, src, dst)
+            path = shortest_path(graph, src, dst)[1:]
             path[-1] = (goal.x, goal.y)
-            #path = shift_reference_point(path)
             print("Path: " + str(path))
             (x, y) = path[0]
-            path = path[1:]
             drone.set_target(x, y, 0)
             goal_updated = False
             print("Target set to " + str(x) + ", " + str(y))
@@ -108,8 +106,8 @@ def main():
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
         if distance((pos.x, pos.y), waypoint) < 1:
-            (x, y) = path[0]
             path = path[1:]
+            (x, y) = path[0]
             drone.set_target(x, y, 0)
             print("Target set to ", x, y)
 
