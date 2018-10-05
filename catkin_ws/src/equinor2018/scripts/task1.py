@@ -90,7 +90,7 @@ def main():
             src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
-            path = shortest_path(graph, src, dst)[0]
+            path = shift_reference_point(shortest_path(graph, src, dst)[0])
             path[-1] = (goal.x, goal.y)
             print("Path: " + str(path))
             (x, y) = path[0]
