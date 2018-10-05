@@ -111,10 +111,10 @@ def shortest_path(graph, source, destination):
     should_be_removed = [True]
 
     for i in range(1, len(unfiltered) - 1):
-        should_be_removed.append(unfiltered[i - 1][0] == unfiltered[i][0] == unfiltered[i + 1][0] or unfilterd[i - 1][1] == unfiltered[i][1] == unfiltered[i + 1][1])
+        should_be_removed.append(unfiltered[i - 1][0] == unfiltered[i][0] == unfiltered[i + 1][0] or unfiltered[i - 1][1] == unfiltered[i][1] == unfiltered[i + 1][1])
 
 
     filtered = [unfiltered[i] for i in range(len(unfiltered)) if not should_be_removed[i]]
 
-    return shift_reference_point(paths)
+    return shift_reference_point(filtered)
 
