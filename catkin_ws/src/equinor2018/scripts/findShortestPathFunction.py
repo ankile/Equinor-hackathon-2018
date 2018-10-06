@@ -16,8 +16,13 @@ def point_in_map(point,map):  # point is [x_cordinate,y_cordinate]
 
 
 def setup_of_lenght_map(map):
+<<<<<<< HEAD
     len_map = []
 
+=======
+    global len_map
+    
+>>>>>>> origin/master
     for line in map:
         new_line = []
 
