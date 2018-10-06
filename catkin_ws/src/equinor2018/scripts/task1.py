@@ -99,7 +99,8 @@ def main():
             src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
-            path = insert_break_points(shortest_path(graph, src, dst))
+            path = shortest_path(graph, src, dst)
+            # path = insert_break_points(path)
             path[-1] = (goal.x, goal.y)
             print("Path: " + str(path))
             (x, y) = path[0]
