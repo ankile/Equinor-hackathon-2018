@@ -18,8 +18,8 @@ def goalCallback(msg):
     global goals
     goals = msg
     print(goals)
-    print(len(goals))
-    print(goals[0])
+    print(len(goals.poses))
+    print(goals.poses[0])
 
 
 def parseMap(msg):
