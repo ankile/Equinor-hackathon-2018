@@ -1,6 +1,5 @@
 Spørsmål:
 - Får man alle goals på starten av oppgave 3?
-- Rekkefølgen på unlabeled data?
 
 
 Idéer presentasjon

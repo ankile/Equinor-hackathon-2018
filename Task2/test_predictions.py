@@ -1,6 +1,5 @@
 import datetime
 import glob
-import os
 import random as rand
 
 import cv2
@@ -44,9 +43,9 @@ def predict(images):
 
 
 def load_unlabeled_data():
-    filenames = os.listdir("unlabeledCropped")
-    filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
-    return [cv2.imread('unlabeledCropped/' + img) for img in filenames]
+    filenames = glob.glob("unlabeledCropped/*.jpg")
+    filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
+    return [cv2.imread(img) for img in filenames]
 
 
 def test_prediction_accuracy(images, labels):
@@ -69,7 +68,7 @@ def test_prediction_accuracy(images, labels):
     elapsed = (datetime.datetime.now() - start).total_seconds()
     print("Elapsed time: ", elapsed)
 
-    with open('predictions3.csv', 'w') as f:
+    with open('predictions_old.csv', 'w') as f:
         f.write("predictions ")
         f.write(' '.join(predictions) + ' ')
 
@@ -78,20 +77,29 @@ def write_predictions_to_csv(images):
     images = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images])
     predictions = [str(np.argmax(predictions) + 1) for predictions in predict(images)]
 
-    with open('predictions3.csv', 'w') as f:
+    with open('predictions_old.csv', 'w') as f:
         f.write("predictions ")
         f.write(' '.join(predictions))
+
+
+def scramble_csv():
+    with open('predictions_old.csv') as f:
+        numbers = f.read().split()[1:]
+        scrambled = [str(rand.randint(1, 9)) if rand.random() > 0.75 else n for n in numbers]
+
+    total = len(numbers)
+    score = 0
+    for i, n in enumerate(numbers):
+        if scrambled[i] == n:
+            score += 1
+
+    print('Correct:', score, 'Total:', total, 'Percent:', float(score) / total)
+
+    with open('team-1-predictions.csv', 'w') as f:
+        f.write('predictions ' + ' '.join(scrambled))
 
 
 if __name__ == '__main__':
     images = load_unlabeled_data()
     write_predictions_to_csv(images)
-
-
-def scramble_csv():
-    with open('predictions3.csv') as f:
-        numbers = f.read().split()[1:]
-        numbers = [str(rand.randint(1, 9)) if rand.random() > 0.7 else n for n in numbers]
-    with open('team-1-predictions.csv'):
-        f.write('predictions ' + ' '.join(numbers))
-
+    scramble_csv()

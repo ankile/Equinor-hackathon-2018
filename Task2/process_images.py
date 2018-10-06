@@ -1,10 +1,9 @@
-import cv2
-import numpy as np
 import glob
 import math
+import os
 
-
-# from utils import load_labeled_data
+import cv2
+import numpy as np
 
 
 def load_labeled_data():
@@ -28,14 +27,17 @@ def load_labeled_data():
 
 def load_unlabeled_data():
     filenames = glob.glob("unlabeledData/*.jpg")
+    filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
     return [cv2.imread(img) for img in filenames]
 
 
-def process_image(i, image, labels, save=False,):
-    cutoff = 20
+def process_image(img):
+    y_dim = len(img)
+    x_dim = len(img[0])
+    cutoff = 25
     xs, ys = [], []
     while not len(xs) or not len(ys):
-        for y, row in enumerate(image):
+        for y, row in enumerate(img):
             for x, pixel in enumerate(row):
                 if sum(pixel) < cutoff and pixel[0] == pixel[1] == pixel[2]:
                     xs.append(x)
@@ -45,7 +47,35 @@ def process_image(i, image, labels, save=False,):
     min_x, max_x = min(xs), max(xs)
     min_y, max_y = min(ys), max(ys)
 
-    cropped = image[min_y:max_y, min_x:max_x]
+    img = img[max(min_y - 5, 0):min(max_y + 5, y_dim), max(min_x - 5, 0):min(max_x + 5, x_dim)]
+
+    # Filtering and masking
+    # Make image have one color channel
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = np.pad(img, ((5, 5), (5, 5)), 'constant', constant_values=255)
+
+    cutoff = 30
+    _, img = cv2.threshold(img, cutoff, 255, cv2.THRESH_BINARY)
+
+    # Find contours
+    _, contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    contours = sorted(contours, key=lambda z: cv2.boundingRect(z)[2] * cv2.boundingRect(z)[3])
+
+    try:
+        cnt = contours.pop()
+        if cv2.boundingRect(cnt)[2] * cv2.boundingRect(cnt)[3] == len(img) * len(img[0]):
+            cnt = contours.pop()
+    except IndexError:
+        print('img:', img)
+        return None
+
+    x, y, w, h = cv2.boundingRect(cnt)
+
+    min_x, max_x = x, x + w
+    min_y, max_y = y, y + h
+
+    img = img[min_y:max_y, min_x:max_x]
 
     diff_x = max_x - min_x
     diff_y = max_y - min_y
@@ -61,23 +91,18 @@ def process_image(i, image, labels, save=False,):
         pad_x_l += int(math.floor((diff_y - diff_x) / 2))
         pad_x_r += int(math.ceil((diff_y - diff_x) / 2))
 
-    try:
-        gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
-    except:
-        return
+    img = np.pad(img, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)), 'constant', constant_values=255)
 
-    _, gray = cv2.threshold(gray, cutoff, 255, cv2.THRESH_BINARY)
-
-    padded = np.pad(gray, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)), 'constant', constant_values=255)
-
-    if save:
-        cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i), padded)
+    return img
 
 
-images, labels = load_labeled_data()
-
-for i, image in enumerate(images):
-    # if i % 50 == 0:
-    print('Image: ', i)
-    process_image(i, image, labels, save=True)
-
+if __name__ == '__main__':
+    images, labels = load_labeled_data()
+    # images = load_unlabeled_data()
+    for i, image in enumerate(images):
+        if i % 10 == 0:
+            print('Image:', i, 'Label:', labels[i])
+        processed_image = process_image(image)
+        if processed_image is not None:
+            cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i + 1000), processed_image)
+            # cv2.imwrite('unlabeledCropped/' + str(i) + '.jpg', processed_image)
