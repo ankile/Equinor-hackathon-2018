@@ -11,6 +11,9 @@ current_pose = PoseStamped()  # geometry_msgs::PoseStamped
 goal = Point()  # geometry_msgs::Point
 goal_updated = False
 
+def endurance_track(graph):
+    return shortest_path(graph, (6.5, 19.5), (3.5, 3.5)) + shortest_path(graph, (3.5, 3.5), (22, 35)) + shortest_path(graph, (22, 35), (6.5, 19.5))
+
 
 def distance(p0, p1):
     (x0, y0) = (p0[0], p0[1])
