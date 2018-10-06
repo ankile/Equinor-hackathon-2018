@@ -2,7 +2,7 @@ import glob
 import cv2
 import numpy as np
 
-from KerasMNIST.cnnPredict import predict
+from DoraNet.dora_predict import predict
 
 
 def load_unlabeled_data():
