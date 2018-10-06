@@ -4,6 +4,7 @@ import rospy
 import drone
 from dijkstra import *
 from findShortestPathFunction import *
+from breakpoints import *
 from geometry_msgs.msg import PoseStamped, Point, Pose
 from ascend_msgs.srv import GlobalMap
 
@@ -70,7 +71,7 @@ def main():
     # Construct a graph from the world map
     graph = ManhattanGraph(world_map)
     # The current path
-    path = []
+    path = endurance_track(graph)
 
     # Initialize drone
     drone.init()
@@ -92,19 +93,20 @@ def main():
         cur_pos = (pos.x, pos.y)
         speed = distance(prev_pos, cur_pos)
         prev_pos = cur_pos
-
+        """
         if goal_updated:
             print ("Goal updated")
             src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
-            path = shortest_path(graph, src, dst)
+            path = insert_break_points(shortest_path(graph, src, dst))
             path[-1] = (goal.x, goal.y)
             print("Path: " + str(path))
             (x, y) = path[0]
             drone.set_target(x, y, 0)
             goal_updated = False
             print("Target set to " + str(x) + ", " + str(y))
+        """
 
         if not path or not goal:
             continue

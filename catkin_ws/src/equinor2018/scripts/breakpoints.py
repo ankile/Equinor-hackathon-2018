@@ -23,8 +23,6 @@ def get_mid_breakpoints(input_array):
 
 
 def insert_break_points(input_array):
-
-
     return_array = []
     didChange = False
     for ind in range(0, len(input_array) - 1):
@@ -62,9 +60,3 @@ def insert_break_points(input_array):
     return_array.append(input_array[len(input_array) - 1])
 
     return return_array
-
-
-
-x = insert_break_points([[1,1],[13,1],[13,6],[10,6],[-10,6]])
-for point in x:
-    print(point)
