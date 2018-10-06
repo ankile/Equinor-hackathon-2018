@@ -95,6 +95,7 @@ def main():
         # Do stuff
 
         pos = current_pose.pose.position
+
         cur_pos = (pos.x, pos.y)
         speed = distance(prev_pos, cur_pos) * 30
         velocity = (cur_pos[0] - prev_pos[0], cur_pos[1] - prev_pos[1])
