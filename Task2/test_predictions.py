@@ -26,6 +26,12 @@ def load_labeled_data():
     return images, labels
 
 
+def load_unlabeled_data():
+    filenames = os.listdir("unlabeledCropped")
+    filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
+    return [cv2.imread('unlabeledCropped/' + img) for img in filenames]
+
+
 def predict(images):
     x = np.invert(images)
     x = np.array([imresize(image, (28, 28)) for image in x])
@@ -60,13 +66,19 @@ def test_prediction_accuracy(images, labels):
     correct = 0
     accuracy = 0.0
 
+    errors = []
+
     for i, prediction in enumerate(predictions):
         if int(prediction) == labels[i]:
             correct += 1
+        else:
+            errors.append((labels[i],int(prediction)))
+
         accuracy = float(correct) / total
     print(correct, total, accuracy)
     elapsed = (datetime.datetime.now() - start).total_seconds()
     print("Elapsed time: ", elapsed)
+    print(errors)
 
     with open('predictions_old.csv', 'w') as f:
         f.write("predictions ")
