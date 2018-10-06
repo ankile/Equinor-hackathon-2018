@@ -7,7 +7,7 @@ import numpy as np
 from scipy.misc import imresize
 
 
-def load_labeled_data(path):
+def load_labeled_data(filepath):
     """
     Returns a list of openCV images and a list of the corresponding labels
     """
@@ -16,7 +16,7 @@ def load_labeled_data(path):
     labels = []
 
     for i in range(1, 10):
-        path = (path, str(i), "*.jpg")
+        path = (filepath, str(i), "*.jpg")
         filenames = glob.glob("/".join(path))
         images_one_type = [np.invert(cv2.imread(img)) for img in filenames]
         labels_one_type = [i] * len(images_one_type)
@@ -59,7 +59,7 @@ images = np.array([imresize(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY), (28, 28)) fo
 im_test = np.array([imresize(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY), (28, 28)) for image in im_test])
 
 images = images.reshape(images.shape[0], img_rows, img_cols, 1)
-im_test = images.reshape(im_test.shape[0], img_rows, img_cols, 1)
+im_test =im_test.reshape(im_test.shape[0], img_rows, img_cols, 1)
 input_shape = (img_rows, img_cols, 1)
 
 images = images.astype('float32')
@@ -85,7 +85,7 @@ model.fit(images, labels,
 model.save('DoraNet/doranet.h5')
 
 score = model.evaluate(im_test, la_test, verbose=0)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
+print(score)
+# print('Test accuracy:', score[1])
 
 #print("Baseline Error: %.2f%%" % (100-scores[1]*100))
