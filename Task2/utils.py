@@ -40,7 +40,6 @@ def shuffle(images, labels):
     return images, labels
 
 
-
 def load_unlabeled_data():
     filenames = os.listdir("unlabeledData")
     filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
