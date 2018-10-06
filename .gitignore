@@ -1,5 +1,5 @@
 .catkin_workspace
-
+.idea/*
 build/
 devel/
 install/
