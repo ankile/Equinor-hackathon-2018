@@ -7,11 +7,13 @@ ap = argparse.ArgumentParser()
 
 ap.add_argument("-i", "--image", required=True,
 	help="path to input image")
+ap.add_argument("-f", "--filetype", required=False,default="jpg",
+	help="select filetype")
 
 
 args = vars(ap.parse_args())
 
-x = imread(args["image"] + '.png',mode='L')
+x = imread(args["image"] + '.'+args["filetype"],mode='L')
 
 #compute a bit-wise inversion so black becomes white and vice versa
 x = np.invert(x)
@@ -27,7 +29,7 @@ x /= 255
 
 #perform the prediction
 from keras.models import load_model
-model = load_model('cnn_mnist_techathon.h5')
+model = load_model('cnn_mnist_techathonv2.h5')
 out = model.predict(x)
 print(out)
 print(np.argmax(out))

@@ -12,7 +12,7 @@ def load_labeled_data(img_path="Data", do_shuffle=False):
     labels = []
 
     for i in range(1, 10):
-        path = (str(path), str(i), "*.jpg")
+        path = ("cropped", str(i), "*.png")
         filenames = glob.glob("/".join(path))
         images_one_type = [cv2.imread(img, 0) for img in filenames]
         labels_one_type = [i] * len(images_one_type)
