@@ -77,7 +77,7 @@ def main():
 
     # Arm and set offboard
     drone.block_until_armed_and_offboard()
-
+    print("Hello!")
     # Takeoff
     drone.takeoff()
 
