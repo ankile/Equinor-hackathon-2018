@@ -43,7 +43,13 @@ def insert_break_points(input_array):
                     break_lenght = 2.8
 
                 if road_length >= 5:
-                    break_lenght = 7.2
+                    break_lenght = 5.2
+
+                if road_length >= 8:
+                    break_lenght = 6.2
+
+                if road_length >= 12:
+                    break_lenght = 9
 
                 if x0 == x1:
                     if y1 > y0:
