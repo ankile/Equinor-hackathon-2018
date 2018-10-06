@@ -5,7 +5,7 @@ import rospy
 import drone
 from dijkstra import *
 
-from breakpoints import *
+
 from geometry_msgs.msg import PoseStamped, Point, Pose
 from ascend_msgs.srv import GlobalMap
 
