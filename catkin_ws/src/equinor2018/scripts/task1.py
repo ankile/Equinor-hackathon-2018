@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-import can_move
+
 import drone
 from dijkstra import *
 from findShortestPathFunction import *
