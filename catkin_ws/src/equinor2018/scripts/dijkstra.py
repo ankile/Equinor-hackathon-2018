@@ -58,7 +58,7 @@ class RecursivePath:
         return self.cost == other.cost
 
 def are_parallell(p0, p1, p2):
-    epsilon = 0.1
+    epsilon = 0.01
     dot = lambda a, b: a[0] * b[0] + a[1] * b[1]
     return dot(p0, p1) - dot(p1, p2) <= epsilon
 
