@@ -66,8 +66,6 @@ def process_image(i, image, save=False):
     try:
         gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
     except:
-        print('fail')
-        print(cropped)
         return
 
     # Apply dilation and erosion to remove some noise
