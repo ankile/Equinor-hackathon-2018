@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+import can_move
 import drone
 from dijkstra import *
 from findShortestPathFunction import *
@@ -92,6 +93,7 @@ def main():
         pos = current_pose.pose.position
         cur_pos = (pos.x, pos.y)
         speed = distance(prev_pos, cur_pos) * 30
+        velocity = (cur_pos[0] - prev_pos[0], cur_pos[1] - prev_pos[1])
         prev_pos = cur_pos
 
         if goal_updated:
@@ -126,7 +128,7 @@ def main():
             distance_req = 0.12
             speed_req = 0.08
 
-        if distance((pos.x, pos.y), waypoint) < distance_req and speed < speed_req:
+        if can_move.is_safe_to_move(world_map, cur_pos, path[0], velocity) or (distance((pos.x, pos.y), waypoint) < distance_req and speed < speed_req):
             path = path[1:]
             (x, y) = path[0]
             drone.set_target(x, y, 0)
