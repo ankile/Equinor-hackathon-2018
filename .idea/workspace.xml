@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="da36eb38-5d08-461d-ab91-78201cb6e5d3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/findShortestPathFunction.py" afterPath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/findShortestPathFunction.py" />
       <change beforePath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py" afterPath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -99,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="task1.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="task1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="116" column="53" lean-forward="false" selection-start-line="116" selection-start-column="53" selection-end-line="116" selection-end-column="53" />
+            <state relative-caret-position="225">
+              <caret line="15" column="129" lean-forward="false" selection-start-line="15" selection-start-column="129" selection-end-line="15" selection-end-column="129" />
               <folding>
                 <element signature="e#23#35#0" expanded="true" />
               </folding>
@@ -111,7 +110,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="findShortestPathFunction.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="findShortestPathFunction.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/findShortestPathFunction.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
@@ -157,8 +156,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py" />
-        <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py" />
         <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/findShortestPathFunction.py" />
+        <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py" />
       </list>
     </option>
   </component>
@@ -360,14 +359,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/cv.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -392,21 +383,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="116" column="53" lean-forward="false" selection-start-line="116" selection-start-column="53" selection-end-line="116" selection-end-column="53" />
-          <folding>
-            <element signature="e#23#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/findShortestPathFunction.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="3" lean-forward="false" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="129" lean-forward="false" selection-start-line="15" selection-start-column="129" selection-end-line="15" selection-end-column="129" />
+          <folding>
+            <element signature="e#23#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -13,7 +13,7 @@ goal = Point()  # geometry_msgs::Point
 goal_updated = False
 
 def endurance_track(graph):
-    return shortest_path(graph, (6.5, 19.5), (3.5, 3.5)) + shortest_path(graph, (3.5, 3.5), (22, 35)) + shortest_path(graph, (22, 35), (6.5, 19.5))
+    return shortest_path(graph, (6, 19), (3, 3)) + shortest_path(graph, (3, 3), (22, 35)) + shortest_path(graph, (22, 35), (6, 19))
 
 
 def distance(p0, p1):
