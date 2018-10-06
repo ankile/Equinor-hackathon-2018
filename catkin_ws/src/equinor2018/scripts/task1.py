@@ -129,6 +129,7 @@ def main():
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
 
 
+
         if (not drag_back_point) and speed > 0.13 and (speed**2)*0.012 - 0.8 > distance((pos.x, pos.y), waypoint):
             path.insert(0,last_point)
 
