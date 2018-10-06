@@ -14,7 +14,7 @@ def load_labeled_data():
     labels = []
 
     for i in range(1, 10):
-        path = ("Data", str(i), "*.jpg")
+        path = ("selflabeled", str(i), "*.jpg")
         filenames = glob.glob("/".join(path))
         images_one_type = [cv2.imread(img) for img in filenames]
         labels_one_type = [i] * len(images_one_type)
@@ -66,6 +66,7 @@ def process_image(img):
             cnt = contours.pop()
     except IndexError:
         print('img:', img)
+        return None
 
     x, y, w, h = cv2.boundingRect(cnt)
 
@@ -99,4 +100,5 @@ if __name__ == '__main__':
         if i % 10 == 0:
             print('Image:', i, 'Label:', labels[i])
         processed_image = process_image(image)
-        cv2.imwrite('cropped/{}/{}.jpg'.format(labels[i], i), processed_image)
+        if processed_image is not None:
+            cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i), processed_image)

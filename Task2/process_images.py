@@ -71,7 +71,6 @@ def process_image(i, image, labels, save=False,):
     padded = np.pad(gray, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)), 'constant', constant_values=255)
 
     if save:
-        # cv2.imwrite(f'cropped/{labels[i]}/{i}.png', padded)
         cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i), padded)
 
 
