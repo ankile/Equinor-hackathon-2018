@@ -71,7 +71,7 @@ def main():
     # Construct a graph from the world map
     graph = ManhattanGraph(world_map)
     # The current path
-    path = endurance_track(graph)
+    path = []#endurance_track(graph)
 
     # Initialize drone
     drone.init()
@@ -93,7 +93,7 @@ def main():
         cur_pos = (pos.x, pos.y)
         speed = distance(prev_pos, cur_pos)
         prev_pos = cur_pos
-        """
+
         if goal_updated:
             print ("Goal updated")
             src = (int(pos.x), int(pos.y))
@@ -110,7 +110,7 @@ def main():
         if not path or not goal:
             continue
 
-        """
+
         waypoint = path[0]
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
