@@ -25,7 +25,7 @@ def predict(image):
 
     # perform the prediction
     from keras.models import load_model
-    model = load_model('DoraNet/doranet_withzero.h5')
+    model = load_model('DoraNet/doranet.h5')
     return model.predict(x)
 
 
