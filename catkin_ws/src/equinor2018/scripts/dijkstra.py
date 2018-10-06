@@ -31,6 +31,10 @@ class ManhattanGraph:
 
         return ((x1 - x0)**2 + (y1 - y0)**2) ** 0.5
 
+def normalize(t):
+    m = (t[0]**2 + t[1]**2)**0.5
+    return (t[0] / m, t[1] / m)
+
 
 class RecursivePath:
     def __init__(self, prev, node, cost):
@@ -60,7 +64,9 @@ class RecursivePath:
 def are_parallell(p0, p1, p2):
     epsilon = 0.01
     dot = lambda a, b: a[0] * b[0] + a[1] * b[1]
-    return dot(p0, p1) - dot(p1, p2) <= epsilon
+    v1 = normalize(p1[0] - p0[0], p1[1] - p0[1])
+    v2 = normalize(p2[0] - p1[0], p2[1] - p1[2])
+    return abs(v1[0] - v2[0]) < epsilon and abs(v1[1] - v2[1]) < epsilon
 
 def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_factor = 1):
     """
