@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 
-def load_labeled_data():
+def load_labeled_data(path="Data"):
     """
     Returns a list of openCV images and a list of the corresponding labels
     """
@@ -12,7 +12,7 @@ def load_labeled_data():
     labels = []
 
     for i in range(1, 10):
-        path = ("cropped", str(i), "*.png")
+        path = (str(path), str(i), "*.png")
         filenames = glob.glob("/".join(path))
         images_one_type = [cv2.imread(img,0) for img in filenames]
         labels_one_type = [i] * len(images_one_type)
