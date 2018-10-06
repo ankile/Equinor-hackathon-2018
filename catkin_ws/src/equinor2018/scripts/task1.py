@@ -117,14 +117,14 @@ def main():
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
 
         #for breakpoints
-        distance_req = 0.5
-        speed_req = 0.2
+        distance_req = 0.4
+        speed_req = 0.1
 
 
         #for normal points
         if isinstance(path[0],tuple):
-            distance_req = 0.075
-            speed_req = 0.05
+            distance_req = 0.08
+            speed_req = 0.08
 
         if distance((pos.x, pos.y), waypoint) < distance_req and speed < speed_req:
             path = path[1:]
