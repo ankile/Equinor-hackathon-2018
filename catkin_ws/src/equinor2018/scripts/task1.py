@@ -91,7 +91,7 @@ def main():
 
         pos = current_pose.pose.position
         cur_pos = (pos.x, pos.y)
-        speed = distance(prev_pos, cur_pos)
+        speed = distance(prev_pos, cur_pos) * 30
         prev_pos = cur_pos
 
         if goal_updated:
@@ -115,7 +115,7 @@ def main():
         waypoint = path[0]
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
-        if distance((pos.x, pos.y), waypoint) < 0.05 and speed < 0.05:
+        if distance((pos.x, pos.y), waypoint) < 0.05 and speed < 0.005:
             path = path[1:]
             (x, y) = path[0]
             drone.set_target(x, y, 0)
