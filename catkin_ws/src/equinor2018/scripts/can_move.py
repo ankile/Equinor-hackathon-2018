@@ -47,11 +47,10 @@ def line_is_non_colliding(grid, start, velocity_sum, lookahead, pieces = 1000):
 # We'll assume that the initial velocity vector is constant throughout the movement, even though that isn't the case.
 def is_safe_to_move(grid, source, destination, velocity, lookahead = 5, drone_size = 0.9):
     drone_width = drone_size * 0.5
-
-    (dx, dy) = norm((- y/x, 1) if abs(x) > abs(y) else (1, - x / y))
     (x0, y0) = source
     (x1, y1) = destination
-    p = (x1 - x0 + velocity[0], y1 - y0 + velocity[1])
+    (x, y) = (x1 - x0 + velocity[0], y1 - y0 + velocity[1])
+    (dx, dy) = norm((- y/x, 1) if abs(x) > abs(y) else (1, - x / y))
 
     first_is_non_colliding = line_is_non_colliding(grid, (x0 + drone_width * dx, y0 + drone_width * dy), p, lookahead)
     second_is_non_colliding = line_is_non_colliding(grid, (x0 - drone_width * dx, y0 + drone_width * dy), p, lookahead)
