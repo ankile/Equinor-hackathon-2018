@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="da36eb38-5d08-461d-ab91-78201cb6e5d3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py" afterPath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py" />
+      <change beforePath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py" afterPath="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -58,11 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="breakpoints.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="breakpoints.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="93">
-              <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+            <state relative-caret-position="363">
+              <caret line="42" column="36" lean-forward="true" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -98,7 +98,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="task1.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="task1.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="574">
@@ -155,9 +155,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py" />
         <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/findShortestPathFunction.py" />
         <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/task1.py" />
+        <option value="$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py" />
       </list>
     </option>
   </component>
@@ -375,14 +375,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="93">
-          <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/findShortestPathFunction.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -406,6 +398,14 @@
           <folding>
             <element signature="e#23#35#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/catkin_ws/src/equinor2018/scripts/breakpoints.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="42" column="36" lean-forward="true" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
