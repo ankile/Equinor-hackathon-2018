@@ -17,12 +17,14 @@ def load_unlabeled_data():
 
 
 def write_predictions_to_csv(images):
+    print('entered write predictions')
     result = []
     for i, image in enumerate(images):
         if i % 10 == 0:
             print('Image: ', i)
         bw_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         prediction = np.argmax(predict(bw_image))
+        print('prediction:', prediction)
         result.append(prediction)
 
     with open('predictions.csv', 'w') as f:
@@ -35,4 +37,5 @@ print('code print')
 if __name__ == '__main__':
     print('main entered')
     images = load_unlabeled_data()
+    print('images, length:', len(images))
     write_predictions_to_csv(images)
