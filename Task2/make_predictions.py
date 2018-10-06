@@ -2,7 +2,7 @@ import glob
 import cv2
 import numpy as np
 
-from KerasMNIST.cnnPredict import predict
+from DoraNet.dora_predict import predict
 
 
 def load_unlabeled_data():
@@ -12,6 +12,8 @@ def load_unlabeled_data():
 
 
 def write_predictions_to_csv(images):
+    with open('predctions2.csv', 'w') as f:
+        f.write("predictions ")
     result = []
     for i, image in enumerate(images):
         bw_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
