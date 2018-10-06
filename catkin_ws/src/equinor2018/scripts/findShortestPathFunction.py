@@ -159,7 +159,7 @@ def clean_my_point_array(input_array):
         if didChange == False:
             break
 
-    #lengste åpne veiene output_array
+    #lengste pne veiene output_array
 
 
 
