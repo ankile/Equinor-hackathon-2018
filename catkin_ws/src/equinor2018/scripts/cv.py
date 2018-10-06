@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 import rospy
 
-import numpy as np
-import matplotlib.pyplot as plt
-import array
-import copy
+
 from Task2.dora_main import predict
 
 from std_msgs.msg import Int8
