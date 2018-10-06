@@ -52,8 +52,8 @@ def is_safe_to_move(grid, source, destination, velocity, lookahead = 5, drone_si
     (x, y) = (x1 - x0 + velocity[0], y1 - y0 + velocity[1])
     (dx, dy) = norm((- y/x, 1) if abs(x) > abs(y) else (1, - x / y))
 
-    first_is_non_colliding = line_is_non_colliding(grid, (x0 + drone_width * dx, y0 + drone_width * dy), p, lookahead)
-    second_is_non_colliding = line_is_non_colliding(grid, (x0 - drone_width * dx, y0 + drone_width * dy), p, lookahead)
+    first_is_non_colliding = line_is_non_colliding(grid, (x0 + drone_width * dx, y0 + drone_width * dy), (dx,dy), lookahead)
+    second_is_non_colliding = line_is_non_colliding(grid, (x0 - drone_width * dx, y0 + drone_width * dy), (dx,dy), lookahead)
 
     return first_is_non_colliding and second_is_non_colliding
 
