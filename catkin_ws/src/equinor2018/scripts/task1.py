@@ -106,11 +106,11 @@ def main():
             drone.set_target(x, y, 0)
             goal_updated = False
             print("Target set to " + str(x) + ", " + str(y))
-        """
 
         if not path or not goal:
             continue
 
+        """
         waypoint = path[0]
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
