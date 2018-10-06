@@ -12,6 +12,7 @@ class ManhattanGraph:
     """
     def __init__(self, grid):
         self.grid = grid
+        self.prev_node = None
 
     def size(self):
         return (len(self.grid[0]), len(self.grid))
@@ -56,6 +57,11 @@ class RecursivePath:
     def __eq__(self, other):
         return self.cost == other.cost
 
+def are_parallell(p0, p1, p2):
+    epsilon = 0.1
+    dot = lambda a, b: a[0] * b[0] + a[1] * b[1]
+    return dot(p0, p1) - dot(p1, p2) <= epsilon
+
 def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_factor = 1):
     """
     :param graph: A graph to traverse
@@ -94,7 +100,8 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
         # and add all of those which result in a shorter path.
         for node in graph.adjacents_to(shortest.node):
             edge_cost = graph.cost(shortest.node, node)
-            path = shortest.appending(node, edge_cost)
+            cost_scaling = 1 if shortest.node.prev is None or are_parallell(shortest.node.prev, shortest.node, node) else 10
+            path = shortest.appending(node, cost_scaling * edge_cost)
             (x1, y1) = path.node
 
             if path.cost < least_costs[y1][x1] * exploration_factor:
