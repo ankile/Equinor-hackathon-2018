@@ -51,7 +51,7 @@ def computer_vision():
 
     rospy.init_node("cv_node", anonymous=True)
     rospy.Subscriber("mavros/local_position/pose", PoseStamped, positionCallback)
-    rospy.Subscriber("/shouldguess", Int8, shouldguessCallback)
+    rospy.Subscriber("/should_guess", Int8, shouldguessCallback)
 
     three_channel_image = ThreeChannelImage()
 
