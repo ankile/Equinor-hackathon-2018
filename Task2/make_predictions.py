@@ -30,5 +30,9 @@ def write_predictions_to_csv(images):
 
     return True
 
-images = load_unlabeled_data()
-write_predictions_to_csv(images)
+print('code print')
+
+if __name__ == '__main__':
+    print('main entered')
+    images = load_unlabeled_data()
+    write_predictions_to_csv(images)
