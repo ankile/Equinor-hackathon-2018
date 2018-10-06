@@ -27,6 +27,12 @@ def load_labeled_data():
     return images, labels
 
 
+def load_unlabeled_data():
+    filenames = os.listdir("unlabeledCropped")
+    filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
+    return [cv2.imread('unlabeledCropped/' + img) for img in filenames]
+
+
 def predict(images):
     x = np.invert(images)
     x = np.array([imresize(image, (28, 28)) for image in x])
@@ -43,10 +49,6 @@ def predict(images):
     return model.predict(x, batch_size=32)
 
 
-def load_unlabeled_data():
-    filenames = os.listdir("unlabeledCropped")
-    filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
-    return [cv2.imread('unlabeledCropped/' + img) for img in filenames]
 
 
 def test_prediction_accuracy(images, labels):
@@ -75,9 +77,6 @@ def test_prediction_accuracy(images, labels):
     print("Elapsed time: ", elapsed)
     print(errors)
 
-    with open('predictions3.csv', 'w') as f:
-        f.write("predictions ")
-        f.write(' '.join(predictions) + ' ')
 
 
 def write_predictions_to_csv(images):
@@ -90,8 +89,8 @@ def write_predictions_to_csv(images):
 
 
 if __name__ == '__main__':
-    images = load_unlabeled_data()
-    write_predictions_to_csv(images)
+    images, labels = load_labeled_data()
+    test_prediction_accuracy(images,labels)
 
 
 def scramble_csv():

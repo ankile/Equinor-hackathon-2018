@@ -38,52 +38,51 @@ def shuffle(images, labels):
     return images, labels
 
 
-
 batch_size = 64
 num_classes = 9
-epochs = 24
+epochs = 12
 
 # input image dimensions
 img_rows, img_cols = 28, 28
 
 # the data, shuffled
 
-images, labels = load_labeled_data("cropped")
+#images, labels = load_labeled_data("cropped")
 im_test, la_test = load_labeled_data("selflabeledcropped")
 
-labels = [labels[i]-1 for i in range(len(labels))]
-la_test=[la_test[i]-1 for i in range(len(la_test))]
+#labels = [labels[i]-1 for i in range(len(labels))]
+la_test = [la_test[i]-1 for i in range(len(la_test))]
 
 
-images = np.array([imresize(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY), (28, 28)) for image in images])
+#images = np.array([imresize(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY), (28, 28)) for image in images])
 im_test = np.array([imresize(cv2.cvtColor(image,cv2.COLOR_BGR2GRAY), (28, 28)) for image in im_test])
 
-images = images.reshape(images.shape[0], img_rows, img_cols, 1)
+#images = images.reshape(images.shape[0], img_rows, img_cols, 1)
 im_test =im_test.reshape(im_test.shape[0], img_rows, img_cols, 1)
 input_shape = (img_rows, img_cols, 1)
 
-images = images.astype('float32')
+#images = images.astype('float32')
 im_test = im_test.astype('float32')
 
-images /= 255
+#images /= 255
 im_test /= 255
-print('images shape:', images.shape)
-print(images.shape[0], 'train samples')
+#print('images shape:', images.shape)
+#print(images.shape[0], 'train samples')
 print(im_test.shape[0], 'test samples')
 
 # convert class vectors to binary class matrices
-labels = keras.utils.to_categorical(labels, num_classes)
+#labels = keras.utils.to_categorical(labels, num_classes)
 la_test = keras.utils.to_categorical(la_test, num_classes)
 
 # Reload model
-model = keras.models.load_model('DoraNet/mnist_without_zero.h5')
+model = keras.models.load_model('DoraNet/doranet.h5')
 
 
-model.fit(images, labels,
+model.fit(im_test, la_test,
           batch_size=batch_size,
           epochs=epochs,
-          verbose=1, validation_data=(im_test, la_test))
-model.save('DoraNet/doranet.h5')
+          verbose=0, validation_data=None)
+model.save('DoraNet/doranet_enhanced.h5')
 
 score = model.evaluate(im_test, la_test, verbose=0)
 print(score)
