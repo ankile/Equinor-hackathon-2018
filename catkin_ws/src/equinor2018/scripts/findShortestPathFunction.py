@@ -1,6 +1,6 @@
 
 
-
+import math
 def point_in_map(point,map):  # point is [x_cordinate,y_cordinate]
 
     if point[1] < 0 or point[0] < 0:  # bellow map
@@ -159,7 +159,51 @@ def clean_my_point_array(input_array):
         if didChange == False:
             break
 
+    #lengste åpne veiene output_array
+
+
+
     return output_array
+
+
+def add_breaking_points(input_array):
+
+
+    return_array = []
+    didChange = False
+    for ind in range(0, len(input_array) - 1):
+
+        x0 = input_array[ind][0]
+        x1 = input_array[ind + 1][0]
+
+        y0 = input_array[ind][1]
+        y1 = input_array[ind + 1][1]
+
+        road_length = ((x0 - x1)**2 + (y0 - y1)**2)**(0.5)
+        return_array.append(input_array[ind])
+        if road_length > 3: #here we add a new point
+                break_lenght = 1
+                if road_length > 4:
+                    break_lenght = 1.2
+
+                if x0 == x1:
+                    if y1 > y0:
+                        return_array.append([x1,y1 - break_lenght])
+                    else:
+                        return_array.append([x1, y1 + break_lenght])
+                elif y0 == y1:
+                    if x1 > x0:
+                        return_array.append([x1 - break_lenght,y1])
+                    else:
+                        return_array.append([x1 + break_lenght, y1])
+                else:
+                    myradians = math.atan2(y1 - y0, x1 - x0)
+                    return_array.append([x1 - break_lenght*math.cos(myradians),y1 - break_lenght*math.sin(myradians)])
+
+
+    return_array.append(input_array[len(input_array) - 1])
+
+    return return_array
 
 
 
@@ -167,12 +211,12 @@ def clean_my_point_array(input_array):
 def find_shortest_path(map,start_point, end_point):
     setup_of_lenght_map(map)
     len_map = setup_of_lenght_map(map)
-    print("These should be the same")
-    print(len(map))
-    print(len(map[0]))
-    print("as these:")
-    print(len(len_map))
-    print(len(len_map[0]))
+    #print("These should be the same")
+    #print(len(map))
+    #print(len(map[0]))
+    #print("as these:")
+    #print(len(len_map))
+    # print(len(len_map[0]))
     paths_array = [PointPath(start_point[0], start_point[1], [])]
 
     winner_paths = []
@@ -186,8 +230,8 @@ def find_shortest_path(map,start_point, end_point):
             new_paths = path.get_all_new_points(map)
 
             for path in new_paths:
-                print(path.y_cordinate)
-                print(path.x_cordinate)
+                #print(path.y_cordinate)
+                #print(path.x_cordinate)
                 if path.get_path_length() < len_map[path.y_cordinate][path.x_cordinate]:
 
                     for point in path.previous_points:
@@ -206,9 +250,12 @@ def find_shortest_path(map,start_point, end_point):
     newPoint.append(winner_paths[len(winner_paths) - 1].x_cordinate)
     newPoint.append(winner_paths[len(winner_paths) - 1].y_cordinate)
     winner_paths[len(winner_paths) - 1].previous_points.append(newPoint)
-    #clean_my_point_array(winner_paths[len(winner_paths) - 1].previous_points)
-    return winner_paths[len(winner_paths) - 1].previous_points
+    clean_array = clean_my_point_array(winner_paths[len(winner_paths) - 1].previous_points)
+    return add_breaking_points(clean_array)
+    #return winner_paths[len(winner_paths) - 1].previous_points
 
 
 
+x = add_breaking_points([[0,0],[7,0],[3,3],[19,-13],[0,0],[-3,-3],[3,-7],[15,19],[100,-100]])
 
+print(x)
