@@ -32,10 +32,10 @@ def is_collision(grid, point):
 def line_is_non_colliding(grid, start, velocity_sum, lookahead, pieces = 1000):
     scale = lambda x, t: (x * t[0], x * t[1])
 
-    for i in range(1.0, pieces + 1):
+    for i in range(1, pieces + 1):
         (x0, y0) = start
         (x, y) = velocity_sum
-        p = (x0 + 1.0 * x / pieces, y0 + 1.0 * y / pieces)
+        p = (x0 + float(x) / pieces, y0 + 1.0 * float(y) / pieces)
 
         if is_collision(grid, p):
             return False
