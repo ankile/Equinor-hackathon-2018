@@ -3,6 +3,7 @@
 import rospy
 import drone
 from dijkstra import *
+from std_msgs.msg import Int8
 from geometry_msgs.msg import PoseStamped, PoseArray
 from ascend_msgs.srv import GlobalMap
 
