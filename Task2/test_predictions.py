@@ -2,8 +2,8 @@ import datetime
 import glob
 import cv2
 import numpy as np
+from scipy.misc import imresize
 
-from DoraNet.dora_predict import predict
 
 
 def load_labeled_data():
@@ -22,63 +22,54 @@ def load_labeled_data():
         images += images_one_type
         labels += labels_one_type
 
-    return shuffle(images, labels)
-
-
-def test_predictions(images, labels):
-    with open('predctions2.csv', 'w') as f:
-        f.write("predictions ")
-    total = 0
-    correct = 0
-    accuracy = 0.0
-    result = []
-    start = datetime.datetime.now()
-    for i, image in enumerate(images):
-        total += 1
-
-        bw_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        prediction = np.argmax(predict(bw_image))
-
-        result.append(str(prediction))
-
-        if prediction == labels[i] - 1:
-            correct += 1
-            accuracy = float(correct) / total
-            print("CORRECT: predicted", prediction + 1, "correctly")
-
-        else:
-            print("WRONG: predicted", prediction + 1, "but was", labels[i])
-
-        if i % 10 == 0:
-            print('Image: ', i)
-            print("Correct:", correct)
-            print("Total:", total)
-            print("Accuracy:", accuracy)
-            elapsed = datetime.datetime.now() - start
-
-            print("Time elapsed:", elapsed)
-
-    with open('predictions2.csv', 'a') as f:
-        f.write(' '.join(result) + ' ')
-
-    return True
-
-
-def shuffle(images, labels):
-    result = [(images[i], labels[i]) for i in range(len(images))]
-    np.random.shuffle(result)
-    images = []
-    labels = []
-    for i in range(len(result)):
-        images.append(result[i][0])
-        labels.append(result[i][1])
-
-    images = np.array(images)
     return images, labels
 
+
+
+def predict(images):
+    x = np.invert(images)
+    x = np.array([imresize(image, (28, 28)) for image in x])
+
+    # convert to a 4D tensor to feed into our model
+    x = np.array( [image.reshape(28, 28, 1) for image in x])
+
+    x =np.array(x.astype('float32'))
+    x /= 255
+
+    # perform the prediction
+    from keras.models import load_model
+    model = load_model('DoraNet/doranet.h5')
+    return model.predict(x, batch_size=32)
+
+
+
+
+def write_predictions_to_csv(images, labels):
+    start = datetime.datetime.now()
+
+    images = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images])
+
+    predictions = [str(np.argmax(predictions) + 1) for predictions in predict(images)]
+    print(predictions)
+
+    total = len(predictions)
+    correct = 0
+    accuracy = 0.0
+
+    for i, prediction in enumerate(predictions):
+        if int(prediction) == labels[i]:
+            correct += 1
+        accuracy = float(correct) / total
+    print(correct, total, accuracy)
+    elapsed = (datetime.datetime.now()-start).total_seconds()
+    print("Elapsed time: ", elapsed)
+
+    with open('predictions2.csv', 'w') as f:
+        f.write("predictions ")
+        f.write(' '.join(predictions) + ' ')
 
 
 
 if __name__ == '__main__':
     images, labels = load_labeled_data()
-    test_predictions(images, labels)
+    write_predictions_to_csv(images, labels)

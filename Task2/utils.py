@@ -1,4 +1,6 @@
 import glob
+import os
+
 import cv2
 import numpy as np
 
@@ -38,8 +40,10 @@ def shuffle(images, labels):
     return images, labels
 
 
+
 def load_unlabeled_data():
-    filenames = glob.glob("unlabeledData/*.jpg")
+    filenames = os.listdir("unlabeledData")
+    filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
     return [cv2.imread(img) for img in filenames]
 
 
