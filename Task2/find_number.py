@@ -26,6 +26,11 @@ def load_labeled_data():
     return images, labels
 
 
+def load_unlabeled_data():
+    filenames = glob.glob("unlabeledData/*.jpg")
+    return [cv2.imread(img) for img in filenames]
+
+
 def process_image(i, image, save=False):
     cutoff = 20
     xs, ys = [], []
@@ -59,7 +64,15 @@ def process_image(i, image, save=False):
         pad_x_l += int(math.floor((diff_y - diff_x) / 2))
         pad_x_r += int(math.ceil((diff_y - diff_x) / 2))
 
-    gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+    print(image[0][0])
+    try:
+        gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+    except:
+        print('fail')
+        print(cropped)
+        return
+
+    print(gray[0][0])
 
     # Apply dilation and erosion to remove some noise
     kernel = np.ones((1, 1), np.uint8)
@@ -75,18 +88,20 @@ def process_image(i, image, save=False):
     # median blurring  to remove noise
     gray = cv2.medianBlur(gray, 3)
     padded = np.pad(gray, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)), 'constant', constant_values=255)
+    print(padded[0][0])
 
     # cv2.imshow('Padded', padded)
     # cv2.waitKey(0)
 
     if save:
-        cv2.imwrite(f'cropped/{labels[i]}/{i}.png', padded)
+        # cv2.imwrite(f'cropped/{labels[i]}/{i}.png', padded)
+        cv2.imwrite(f'unlabeledCropped/{i}.jpg', padded)
 
 
-images, labels = load_labeled_data()
+images = load_unlabeled_data()
 
 for i, image in enumerate(images):
-    if i % 50 == 0:
-        print('Image: ', i)
+    # if i % 50 == 0:
+    print('Image: ', i)
     process_image(i, image, save=True)
 
