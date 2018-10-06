@@ -87,6 +87,8 @@ def main():
     graph = ManhattanGraph(world_map)
     # Initialize the auto-pilot
     auto_pilot = AutoPilot(graph)
+    rospy.Subscriber('/guess', Int8, auto_pilot.has_guessed_callback)
+    print("Created AutoPilot and subscribed it for /guess")
 
     # Initialize drone
     drone.init()
