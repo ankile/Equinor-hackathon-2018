@@ -86,6 +86,10 @@ def main():
 
     # Create rate limiter
     rate = rospy.Rate(30)
+
+    drag_back_point = False
+    last_point = (1,1)
+
     while not rospy.is_shutdown():
         rate.sleep()
         # Do stuff
@@ -96,12 +100,15 @@ def main():
         velocity = (cur_pos[0] - prev_pos[0], cur_pos[1] - prev_pos[1])
         prev_pos = cur_pos
 
+
+
         if goal_updated:
             print ("Goal updated")
             src = (int(pos.x), int(pos.y))
             dst = (int(goal.x), int(goal.y))
 
             path = shortest_path(graph, src, dst)
+            last_point = src
             # path = insert_break_points(path)
             path[-1] = (goal.x, goal.y)
             print("Path: " + str(path))
@@ -114,25 +121,35 @@ def main():
             continue
 
 
+
+
         waypoint = path[0]
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
 
-        #for breakpoints
-        distance_req = 0.75
-        speed_req = 0.12
+
+        if not drag_back_point and speed > 0.13 and (speed**2)*0.0108 - 0.1 < distance((pos.x, pos.y), waypoint):
+            path.insert(0,last_point)
+
+            (x, y) = path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            drag_back_point = True
 
 
-        #for normal points
-        if isinstance(path[0],tuple):
-            distance_req = 0.12
-            speed_req = 0.08
-
-        if can_move.is_safe_to_move(world_map, cur_pos, path[0], velocity) or (distance((pos.x, pos.y), waypoint) < distance_req and speed < speed_req):
+        if drag_back_point and speed < 0.1:
             path = path[1:]
             (x, y) = path[0]
             drone.set_target(x, y, 0)
             print("Target set to ", x, y)
+            drag_back_point = False
+        elif (distance((pos.x, pos.y), waypoint) < 0.08 and speed < 0.08):
+            last_point = path[0]
+            path = path[1:]
+            (x, y) = path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            drag_back_point = False
 
 
 if __name__ == '__main__':
