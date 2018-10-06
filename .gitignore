@@ -11,3 +11,4 @@ Task2/unlabeledData/
 Task2/__pycache__/*
 Task2/KerasMNIST/__pycache__/
 Task2/env/*
+*.pyc
