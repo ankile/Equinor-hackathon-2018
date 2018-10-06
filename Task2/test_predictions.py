@@ -56,13 +56,19 @@ def write_predictions_to_csv(images, labels):
     correct = 0
     accuracy = 0.0
 
+    errors = []
+
     for i, prediction in enumerate(predictions):
         if int(prediction) == labels[i]:
             correct += 1
+        else:
+            errors.append((labels[i],int(prediction)))
+
         accuracy = float(correct) / total
     print(correct, total, accuracy)
     elapsed = (datetime.datetime.now()-start).total_seconds()
     print("Elapsed time: ", elapsed)
+    print(errors)
 
     with open('predictions2.csv', 'w') as f:
         f.write("predictions ")

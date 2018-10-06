@@ -41,7 +41,7 @@ def shuffle(images, labels):
 
 batch_size = 64
 num_classes = 9
-epochs = 12
+epochs = 24
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -77,6 +77,7 @@ la_test = keras.utils.to_categorical(la_test, num_classes)
 
 # Reload model
 model = keras.models.load_model('DoraNet/mnist_without_zero.h5')
+
 
 model.fit(images, labels,
           batch_size=batch_size,
