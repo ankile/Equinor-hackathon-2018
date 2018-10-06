@@ -17,6 +17,9 @@ def dronePoseCallback(msg):
 def goalCallback(msg):
     global goals
     goals = msg
+    print(goals)
+    print(len(goals))
+    print(goals[0])
 
 
 def parseMap(msg):
@@ -32,7 +35,6 @@ def main():
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
     # We'll publish to this topic when we reach the goal
-    should_guess =
 
     # Create subscriber for position and goal
     rospy.Subscriber('/mavros/local_position/pose', PoseStamped, dronePoseCallback)
