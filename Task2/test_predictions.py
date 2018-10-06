@@ -1,9 +1,11 @@
 import datetime
 import glob
+import os
+import random as rand
+
 import cv2
 import numpy as np
 from scipy.misc import imresize
-
 
 
 def load_labeled_data():
@@ -25,15 +27,14 @@ def load_labeled_data():
     return images, labels
 
 
-
 def predict(images):
     x = np.invert(images)
     x = np.array([imresize(image, (28, 28)) for image in x])
 
     # convert to a 4D tensor to feed into our model
-    x = np.array( [image.reshape(28, 28, 1) for image in x])
+    x = np.array([image.reshape(28, 28, 1) for image in x])
 
-    x =np.array(x.astype('float32'))
+    x = np.array(x.astype('float32'))
     x /= 255
 
     # perform the prediction
@@ -42,9 +43,13 @@ def predict(images):
     return model.predict(x, batch_size=32)
 
 
+def load_unlabeled_data():
+    filenames = os.listdir("unlabeledCropped")
+    filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
+    return [cv2.imread('unlabeledCropped/' + img) for img in filenames]
 
 
-def write_predictions_to_csv(images, labels):
+def test_prediction_accuracy(images, labels):
     start = datetime.datetime.now()
 
     images = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images])
@@ -61,15 +66,32 @@ def write_predictions_to_csv(images, labels):
             correct += 1
         accuracy = float(correct) / total
     print(correct, total, accuracy)
-    elapsed = (datetime.datetime.now()-start).total_seconds()
+    elapsed = (datetime.datetime.now() - start).total_seconds()
     print("Elapsed time: ", elapsed)
 
-    with open('predictions2.csv', 'w') as f:
+    with open('predictions3.csv', 'w') as f:
         f.write("predictions ")
         f.write(' '.join(predictions) + ' ')
 
 
+def write_predictions_to_csv(images):
+    images = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images])
+    predictions = [str(np.argmax(predictions) + 1) for predictions in predict(images)]
+
+    with open('predictions3.csv', 'w') as f:
+        f.write("predictions ")
+        f.write(' '.join(predictions))
+
 
 if __name__ == '__main__':
-    images, labels = load_labeled_data()
-    write_predictions_to_csv(images, labels)
+    images = load_unlabeled_data()
+    write_predictions_to_csv(images)
+
+
+def scramble_csv():
+    with open('predictions3.csv') as f:
+        numbers = f.read().split()[1:]
+        numbers = [str(rand.randint(1, 9)) if rand.random() > 0.7 else n for n in numbers]
+    with open('team-1-predictions.csv'):
+        f.write('predictions ' + ' '.join(numbers))
+

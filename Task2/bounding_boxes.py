@@ -1,5 +1,6 @@
 import glob
 import math
+import os
 
 import cv2
 import numpy as np
@@ -25,7 +26,8 @@ def load_labeled_data():
 
 
 def load_unlabeled_data():
-    filenames = glob.glob("Data/4/*.jpg")
+    filenames = glob.glob("unlabeledData/*.jpg")
+    filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
     return [cv2.imread(img) for img in filenames]
 
 
@@ -95,10 +97,12 @@ def process_image(img):
 
 
 if __name__ == '__main__':
-    images, labels = load_labeled_data()
+    # images, labels = load_labeled_data()
+    images = load_unlabeled_data()
     for i, image in enumerate(images):
-        if i % 10 == 0:
-            print('Image:', i, 'Label:', labels[i])
+        # if i % 10 == 0:
+        #     print('Image:', i, 'Label:', labels[i])
         processed_image = process_image(image)
         if processed_image is not None:
-            cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i), processed_image)
+            # cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i), processed_image)
+            cv2.imwrite('unlabeledCropped/' + str(i) + '.jpg', processed_image)
