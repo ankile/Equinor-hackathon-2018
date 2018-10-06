@@ -16,8 +16,8 @@ args = vars(ap.parse_args())
 
 
 # Path of working folder on Disk
-src_path = os.getcwd()
-img_path = src_path + "/unlabeledData/" + args["image"] + ".jpg"
+src_path = "/home/morgan/PycharmProjects/hackathon_team_1/Task2"
+img_path = src_path + "/" + args["image"] + ".png"
 
 
 # Read image with opencv
