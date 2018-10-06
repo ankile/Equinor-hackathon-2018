@@ -11,9 +11,10 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
+import numpy as np
 
 batch_size = 128
-num_classes = 10
+num_classes = 9
 epochs = 12
 
 # input image dimensions
@@ -21,6 +22,16 @@ img_rows, img_cols = 28, 28
 
 # the data, shuffled and split between train and test sets
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
+print(y_train)
+
+train_filter = np.where(y_train != 0)
+test_filter = np.where(y_test != 0)
+
+x_train, y_train = x_train[train_filter], y_train[train_filter]
+x_test, y_test = x_test[test_filter], y_test[test_filter]
+
+print(y_train)
+
 
 x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
 x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
