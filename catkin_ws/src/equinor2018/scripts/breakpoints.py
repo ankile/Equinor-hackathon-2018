@@ -36,14 +36,14 @@ def insert_break_points(input_array):
         road_length = ((x0 - x1)**2 + (y0 - y1)**2)**(0.5)
         return_array.append(input_array[ind])
         if road_length >= 2: #here we add a new point
-                break_lenght = 0.3
+                break_lenght = 0.4
                 if road_length >= 3:
-                    break_lenght = 0.6
+                    break_lenght = 1.0
                 if road_length >= 4:
-                    break_lenght = 0.9
+                    break_lenght = 1.3
 
                 if road_length >= 5:
-                    break_lenght = 1.2
+                    break_lenght = 1.6
 
                 if x0 == x1:
                     if y1 > y0:

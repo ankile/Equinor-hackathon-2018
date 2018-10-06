@@ -115,7 +115,18 @@ def main():
         waypoint = path[0]
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
-        if distance((pos.x, pos.y), waypoint) < 0.05 and speed < 0.005:
+
+        #for breakpoints
+        distance_req = 0.05
+        speed_req = 0.05
+
+
+        #for normal points
+        if isinstance(path[0],tuple):
+            distance_req = 0.05
+            speed_req = 0.05
+
+        if distance((pos.x, pos.y), waypoint) < distance_req and speed < speed_req:
             path = path[1:]
             (x, y) = path[0]
             drone.set_target(x, y, 0)
