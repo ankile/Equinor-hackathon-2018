@@ -66,19 +66,8 @@ def process_image(i, image, labels, save=False,):
     except:
         return
 
-    # Apply dilation and erosion to remove some noise
-    kernel = np.ones((1, 1), np.uint8)
-    gray = cv2.dilate(gray, kernel, iterations=1)
-    gray = cv2.erode(gray, kernel, iterations=1)
-
-    # thresholding to preprocess the image
-    # gray = cv2.threshold(gray, 0, 255,cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    # gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 2)
-
     _, gray = cv2.threshold(gray, cutoff, 255, cv2.THRESH_BINARY)
 
-    # median blurring  to remove noise
-    gray = cv2.medianBlur(gray, 3)
     padded = np.pad(gray, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)), 'constant', constant_values=255)
 
     if save:
