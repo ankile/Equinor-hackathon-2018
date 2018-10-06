@@ -31,9 +31,9 @@ class ManhattanGraph:
 
         return ((x1 - x0)**2 + (y1 - y0)**2) ** 0.5
 
-def normalize(t):
-    m = (t[0]**2 + t[1]**2)**0.5
-    return (t[0] / m, t[1] / m)
+def normalize(x, y):
+    m = (x**2 + y**2)**0.5
+    return (x / m, y / m)
 
 
 class RecursivePath:
