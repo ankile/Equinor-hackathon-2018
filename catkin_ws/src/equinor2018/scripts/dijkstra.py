@@ -20,6 +20,7 @@ class ManhattanGraph:
         (size_x, size_y) = self.size()
         (x, y) = node
         coords = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+        diagcoords = [(x + dx, y + dy) for dx in [-1, 1] for dy in [-1, 1] if self.grid[y + dy][x] == self.grid[y][x + dx] and self.grid[y+dy][x] in [0, '\x00']]
 
         return [(x, y) for (x, y) in coords if 0 <= x < size_x and 0 <= y < size_y and (self.grid[y][x] == 0 or self.grid[y][x] == '\x00')]
 
@@ -104,7 +105,7 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
 
 
 def shift_reference_point(paths):
-    return [(x - 0.5, y - 0.5) for (x, y) in paths]
+    return [(x + 0.5, y + 0.5) for (x, y) in paths]
 
 def shortest_path(graph, source, destination):
     unfiltered = unfiltered_shortest_path(graph, source, destination)
