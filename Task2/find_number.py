@@ -16,7 +16,7 @@ def load_labeled_data():
     labels = []
 
     for i in range(1, 10):
-        path = ("Data", str(i), "*.jpg")
+        path = ("selflabeled", str(i), "*.jpg")
         filenames = glob.glob("/".join(path))
         images_one_type = [cv2.imread(img) for img in filenames]
         labels_one_type = [i] * len(images_one_type)
@@ -31,7 +31,7 @@ def load_unlabeled_data():
     return [cv2.imread(img) for img in filenames]
 
 
-def process_image(i, image, save=False):
+def process_image(i, image, labels, save=False,):
     cutoff = 20
     xs, ys = [], []
     while not len(xs) or not len(ys):
@@ -64,7 +64,6 @@ def process_image(i, image, save=False):
         pad_x_l += int(math.floor((diff_y - diff_x) / 2))
         pad_x_r += int(math.ceil((diff_y - diff_x) / 2))
 
-    print(image[0][0])
     try:
         gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
     except:
@@ -72,7 +71,6 @@ def process_image(i, image, save=False):
         print(cropped)
         return
 
-    print(gray[0][0])
 
     # Apply dilation and erosion to remove some noise
     kernel = np.ones((1, 1), np.uint8)
@@ -95,13 +93,13 @@ def process_image(i, image, save=False):
 
     if save:
         # cv2.imwrite(f'cropped/{labels[i]}/{i}.png', padded)
-        cv2.imwrite(f'unlabeledCropped/{i}.jpg', padded)
+        cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i), padded)
 
 
-images = load_unlabeled_data()
+images, labels = load_labeled_data()
 
 for i, image in enumerate(images):
     # if i % 50 == 0:
     print('Image: ', i)
-    process_image(i, image, save=True)
+    process_image(i, image, labels, save=True)
 
