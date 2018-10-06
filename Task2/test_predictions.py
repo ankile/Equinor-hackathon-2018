@@ -1,9 +1,11 @@
 import datetime
 import glob
+import os
 import random as rand
 
 import cv2
 import numpy as np
+from keras.models import load_model
 from scipy.misc import imresize
 
 
@@ -32,6 +34,23 @@ def load_unlabeled_data():
     return [cv2.imread('unlabeledCropped/' + img) for img in filenames]
 
 
+def predict_image(image):
+    # compute a bit-wise inversion so black becomes white and vice versa
+    x = np.invert(image)
+
+    # make it the right size
+    x = imresize(x, (28, 28))
+
+    # convert to a 4D tensor to feed into our model
+    x = x.reshape(1, 28, 28, 1)
+    x = x.astype('float32')
+    x /= 255
+
+    model = load_model('DoraNet/doranet_enhanced.h5')
+    out = model.predict(x)
+    return np.argmax(out) + 1
+
+
 def predict(images):
     x = np.invert(images)
     x = np.array([imresize(image, (28, 28)) for image in x])
@@ -44,7 +63,7 @@ def predict(images):
 
     # perform the prediction
     from keras.models import load_model
-    model = load_model('DoraNet/doranet.h5')
+    model = load_model('DoraNet/doranet_enhanced.h5')
     return model.predict(x, batch_size=32)
 
 
@@ -72,7 +91,7 @@ def test_prediction_accuracy(images, labels):
         if int(prediction) == labels[i]:
             correct += 1
         else:
-            errors.append((labels[i],int(prediction)))
+            errors.append((labels[i], int(prediction)))
 
         accuracy = float(correct) / total
     print(correct, total, accuracy)
