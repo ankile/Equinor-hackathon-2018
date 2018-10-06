@@ -9,23 +9,20 @@ import os
 ap = argparse.ArgumentParser()
 
 ap.add_argument("-i", "--image", required=True,
-	help="path to input image")
+                help="path to input image")
 ap.add_argument("-p", "--preprocess", type=str, default="gauss",
-	help="type of preprocessing to be done")
+                help="type of preprocessing to be done")
 args = vars(ap.parse_args())
-
 
 # Path of working folder on Disk
 src_path = "/home/morgan/PycharmProjects/hackathon_team_1/Task2"
 img_path = src_path + "/" + args["image"] + ".png"
-
 
 # Read image with opencv
 original = cv2.imread(img_path)
 
 # Convert to gray
 img = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
-
 
 # -- order of filters below should be reconsidered --
 # -- also consider whether or not a given filter should be used or not --
@@ -54,16 +51,14 @@ if args["preprocess"] == "gauss":
 elif args["preprocess"] == "bin":
     img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
-
-
 # Write the image after applying threshold
 cv2.imwrite(src_path + "thres.png", img)
 
 # Recognize text with tesseract for python
-#result = pytesseract.image_to_string(Image.open(src_path + "thres.png"))
+# result = pytesseract.image_to_string(Image.open(src_path + "thres.png"))
 
 # Remove template file
-#os.remove(temp)
+# os.remove(temp)
 
 cv2.imshow("Image", original)
 cv2.imshow("Output", img)

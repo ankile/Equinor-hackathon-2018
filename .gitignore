@@ -8,3 +8,4 @@ PX4_2017/
 Task2/Data/
 Task2/unlabeledData/
 .DS_Store
+Task2/__pycache__/*
