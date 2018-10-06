@@ -2,11 +2,39 @@
 
 import rospy
 import drone
+from dijkstra import *
 from geometry_msgs.msg import PoseStamped, PoseArray
 from ascend_msgs.srv import GlobalMap
 
 current_pose = PoseStamped()  # geometry_msgs::PoseStamped
+
+# Contains .poses
 goals = PoseArray()  # geometry_msgs::PoseArray
+goals_updated = False
+
+
+class AutoPilot:
+    def __init__(self, graph):
+        self.initial_goals = PoseArray()
+        self.remaining_goals = PoseArray()
+        self.graph = graph
+        self.is_waiting_for_guess = False
+
+    def drone_pose_callback(self, pose_stamped):
+        pass
+
+    def goals_callback(self, PoseArray, goal_callback):
+        pass
+
+    def is_at_subgoal(self):
+        return True
+
+    def has_guessed_callback(self, response):
+        print("Got response: " +  str(response))
+        self.is_waiting_for_guess = False
+
+    def tick(self):
+        pass
 
 
 def dronePoseCallback(msg):
@@ -16,11 +44,11 @@ def dronePoseCallback(msg):
 
 def goalCallback(msg):
     global goals
-    goals = msg
-    print(goals)
-    print(len(goals.poses))
-    print(goals.poses[0])
+    global goals_updated
 
+    if goals != msg:
+        goals = msg
+        goals_updated = True
 
 def parseMap(msg):
     num_rows = msg.dim[0].size
@@ -34,11 +62,12 @@ def parseMap(msg):
 def main():
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
-    # We'll publish to this topic when we reach the goal
 
     # Create subscriber for position and goal
     rospy.Subscriber('/mavros/local_position/pose', PoseStamped, dronePoseCallback)
     rospy.Subscriber('/goals', PoseArray, goalCallback)
+    # Create a topic which the we'll publish to when we're in position.
+    should_guess = rospy.Publisher('/should_guess', Int8, queue_size = 1)
 
     # Create map service client
     getMap = rospy.ServiceProxy('/GlobalMap', GlobalMap)
@@ -53,6 +82,11 @@ def main():
     # Get map as 2D list
     world_map = parseMap(raw_map)
 
+    # Construct a graph from the map
+    graph = ManhattanGraph(world_map)
+    # Initialize the auto-pilot
+    auto_pilot = AutoPilot(graph)
+
     # Initialize drone
     drone.init()
 
@@ -66,8 +100,20 @@ def main():
     rate = rospy.Rate(30)
     while not rospy.is_shutdown():
         rate.sleep()
-        # Do stuff
-        # update waypoint
+
+        # If we're waiting from a response from the CV system, we'll simply wait
+        if auto_pilot.is_waiting_for_guess:
+            continue
+
+        # If we're at a sub_coal, we'll initialize the CV system, and block until we get a response
+        if auto_pilot.is_at_subgoal():
+            print("Currently at sub-goal, waiting for response...")
+            auto_pilot.is_waiting_for_guess = True
+            should_guess.publish(1)
+            continue
+
+        # Otherwise, we'll set the waypoints as specified by the auto-pilot
+        auto_pilot.tick()
 
 
 if __name__ == '__main__':
