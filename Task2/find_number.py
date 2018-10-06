@@ -63,16 +63,12 @@ def process_image(i, image, save=False):
     elif diff_y > diff_x:
         pad_x_l += int(math.floor((diff_y - diff_x) / 2))
         pad_x_r += int(math.ceil((diff_y - diff_x) / 2))
-
-    print(image[0][0])
     try:
         gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
     except:
         print('fail')
         print(cropped)
         return
-
-    print(gray[0][0])
 
     # Apply dilation and erosion to remove some noise
     kernel = np.ones((1, 1), np.uint8)
