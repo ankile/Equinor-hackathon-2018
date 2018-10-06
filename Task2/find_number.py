@@ -26,9 +26,6 @@ def load_labeled_data():
 images, labels = load_labeled_data()
 
 for i, image in enumerate(images):
-    if i % 10 == 0:
-        print('Image:', i + 1)
-
     cutoff = 50
     xs, ys = [], []
     while not len(xs) or not len(ys):
@@ -43,25 +40,28 @@ for i, image in enumerate(images):
     min_y, max_y = min(ys), max(ys)
     print(min_x, max_x, min_y, max_y)
 
+    cropped = image[min_y:max_y, min_x:max_x]
+
     diff_x = max_x - min_x
     diff_y = max_y - min_y
 
-    if diff_x > diff_y:
-        min_y -= math.floor((diff_x - diff_y) / 2)
-        max_y += math.ceil((diff_x - diff_y) / 2)
-    elif diff_y > diff_x:
-        min_x -= math.floor((diff_y - diff_x) / 2)
-        max_x += math.ceil((diff_y - diff_x) / 2)
-
     scale_factor = 0.30
 
-    scale_amount = int(((max_x - min_x) // 2) * scale_factor)
-    min_x, min_y = max(int(min_x - scale_amount), 0), max(int(min_y - scale_amount), 0)
-    max_x, max_y = max(int(max_x + scale_amount), 0), max(int(max_y + scale_amount), 0)
+    pad_x_l, pad_x_r, pad_y_l, pad_y_r = [max(diff_x, diff_y) * scale_factor] * 4
 
-    cropped = image[min_y:max_y, min_x:max_x]
+    if diff_x > diff_y:
+        pad_y_l -= math.floor((diff_x - diff_y) / 2)
+        pad_y_r += math.ceil((diff_x - diff_y) / 2)
+    elif diff_y > diff_x:
+        pad_x_l -= math.floor((diff_y - diff_x) / 2)
+        pad_x_r += math.ceil((diff_y - diff_x) / 2)
 
-    gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+    padded = np.pad(cropped, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)))
+
+    cv2.imshow('Padded')
+    cv2.waitKey(0)
+
+    gray = cv2.cvtColor(padded, cv2.COLOR_BGR2GRAY)
 
     # Apply dilation and erosion to remove some noise
     kernel = np.ones((1, 1), np.uint8)
