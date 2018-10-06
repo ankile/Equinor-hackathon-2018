@@ -12,24 +12,26 @@ def load_labeled_data():
     labels = []
 
     for i in range(1, 10):
-        path = ("cropped", str(i), "*.jpg")
+        path = ("cropped", str(i), "*.png")
         filenames = glob.glob("/".join(path))
-        images_one_type = [cv2.imread(img) for img in filenames]
+        images_one_type = [cv2.imread(img,0) for img in filenames]
         labels_one_type = [i] * len(images_one_type)
         images += images_one_type
         labels += labels_one_type
+
     return shuffle(images, labels)
 
 
 def shuffle(images, labels):
-    paired = [(images[i], labels[i]) for i in range(len(images))]
-    result = np.random.shuffle(paired)
+    result = [(images[i], labels[i]) for i in range(len(images))]
+    np.random.shuffle(result)
     images = []
     labels = []
     for i in range(len(result)):
         images.append(result[i][0])
-    labels.append(result[i][1])
+        labels.append(result[i][1])
 
+    images = np.array(images)
     return images, labels
 
 
