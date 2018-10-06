@@ -23,7 +23,7 @@ def write_predictions_to_csv(images):
             with open('predictions2.csv', 'a') as f:
                 f.write(' '.join(result) + ' ')
             result = []
-            
+
     return True
 
 

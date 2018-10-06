@@ -45,9 +45,6 @@ def process_image(i, image, labels, save=False,):
     min_x, max_x = min(xs), max(xs)
     min_y, max_y = min(ys), max(ys)
 
-    # cv2.imshow('uncropped', image)
-    # cv2.waitKey(0)
-
     cropped = image[min_y:max_y, min_x:max_x]
 
     diff_x = max_x - min_x
@@ -69,7 +66,6 @@ def process_image(i, image, labels, save=False,):
     except:
         return
 
-
     # Apply dilation and erosion to remove some noise
     kernel = np.ones((1, 1), np.uint8)
     gray = cv2.dilate(gray, kernel, iterations=1)
@@ -84,10 +80,6 @@ def process_image(i, image, labels, save=False,):
     # median blurring  to remove noise
     gray = cv2.medianBlur(gray, 3)
     padded = np.pad(gray, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)), 'constant', constant_values=255)
-    print(padded[0][0])
-
-    # cv2.imshow('Padded', padded)
-    # cv2.waitKey(0)
 
     if save:
         # cv2.imwrite(f'cropped/{labels[i]}/{i}.png', padded)
