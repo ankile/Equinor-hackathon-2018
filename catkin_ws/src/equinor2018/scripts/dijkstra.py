@@ -100,7 +100,7 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
         # and add all of those which result in a shorter path.
         for node in graph.adjacents_to(shortest.node):
             edge_cost = graph.cost(shortest.node, node)
-            cost_scaling = 1 if shortest.node.prev is None or are_parallell(shortest.node.prev, shortest.node, node) else 10
+            cost_scaling = 1 if shortest.prev is None or are_parallell(shortest.prev.node, shortest.node, node) else 10
             path = shortest.appending(node, cost_scaling * edge_cost)
             (x1, y1) = path.node
 

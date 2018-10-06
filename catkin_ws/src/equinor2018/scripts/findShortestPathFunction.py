@@ -255,7 +255,8 @@ def find_shortest_path(map,start_point, end_point):
     #return winner_paths[len(winner_paths) - 1].previous_points
 
 
-
+"""
 x = add_breaking_points([[0,0],[7,0],[3,3],[19,-13],[0,0],[-3,-3],[3,-7],[15,19],[100,-100]])
 
 print(x)
+"""
