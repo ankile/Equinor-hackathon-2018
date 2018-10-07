@@ -210,7 +210,7 @@ def main():
                 x = 10
             s1 += (x - 3)*0.03
 
-        if (not drag_back_point) and speed > s1 and (speed**2)*0.067 + 0.9 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 0.8:
+        if (not drag_back_point) and speed > s1 and (speed**2)*0.067 + 1.0 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 0.8:
             print("A")
             path.insert(0,last_point)
             (x, y) = path[0]
