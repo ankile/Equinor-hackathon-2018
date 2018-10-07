@@ -47,10 +47,11 @@ class AutoPilot:
             self.velocity = (x1 - x0, y1 - y0)
 
     def goals_callback(self, pose_array):
-        if pose_array != self.initial_goals:
+        if pose_array != self.initial_goals and self.pos is not None:
             self.initial_goals = pose_array.poses[:]
             self.remaining_goals = pose_array.poses [:]
-            self.path = shortest_path(self.graph, self.pos, self.initial_goals[0])
+            (x, y) = self.pos
+            self.path = shortest_path(self.graph, (int(x), int(y)), self.initial_goals[0])
         pass
 
     def is_at_subgoal(self):
