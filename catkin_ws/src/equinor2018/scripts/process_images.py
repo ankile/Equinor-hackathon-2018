@@ -26,7 +26,7 @@ def load_labeled_data():
 
 
 def load_unlabeled_data():
-    filenames = glob.glob("unlabeledData/*.jpg")
+    filenames = glob.glob("unlabeledData_modified/*.jpg")
     filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
     return [cv2.imread(img) for img in filenames]
 

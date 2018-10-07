@@ -1,5 +1,6 @@
 .catkin_workspace
 .idea/*
+*.pyc
 build/
 devel/
 install/
@@ -11,4 +12,3 @@ Task2/unlabeledData/
 Task2/__pycache__/*
 Task2/KerasMNIST/__pycache__/
 Task2/env/*
-*.pyc
