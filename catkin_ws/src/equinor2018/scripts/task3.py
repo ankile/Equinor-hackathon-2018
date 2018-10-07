@@ -37,12 +37,12 @@ def goalCallback(msg):
         goals = msg.poses
 
         print ("Goal updated")
-        src = (int(pos.x), int(pos.y))
+        src = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
         dst = (int(goals[0].x), int(goals[0].y))
 
         path = shortest_path(graph, src, dst)
         # path = insert_break_points(path)
-        path[-1] = (goal.x, goal.y)
+        path[-1] = (goals[0].x, goals[0].y)
         print("Path: " + str(path))
         (x, y) = path[0]
         drone.set_target(x, y, 0)
