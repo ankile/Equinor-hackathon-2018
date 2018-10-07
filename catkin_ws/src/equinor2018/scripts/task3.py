@@ -113,7 +113,7 @@ def main():
     # Create subscriber for position and goal
     rospy.Subscriber('/mavros/local_position/pose', PoseStamped, dronePoseCallback)
     rospy.Subscriber('/goals', PoseArray, goalCallback)
-    rospy.Subscriper('/guess', Int8, guessed_callback)
+    rospy.Subscriber('/guess', Int8, guessed_callback)
     should_guess = rospy.Publisher('/should_guess', Int8)
 
     # Create map service client
