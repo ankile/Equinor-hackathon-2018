@@ -112,7 +112,7 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
             edge_cost = graph.cost(shortest.node, node)
             cost_scaling = 1 if shortest.prev is None or are_parallell(shortest.prev.node, shortest.node, node) else 10
             dst_scaling = 1 + len([a for a in ring_around(node) if a in ['\x01', 1]])
-            path = shortest.appending(node, dst_scaling * cost_scaling * edge_cost)
+            path = shortest.appending(node, max(dst_scaling, cost_scaling) * edge_cost)
             (x1, y1) = path.node
 
             if path.cost < least_costs[y1][x1] * exploration_factor:

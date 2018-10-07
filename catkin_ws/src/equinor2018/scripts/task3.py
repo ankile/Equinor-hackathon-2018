@@ -203,7 +203,7 @@ def main():
 
 
 
-        if (not drag_back_point) and speed > 0.25 and (speed**2)*0.067 + 0.7 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1:
+        if (not drag_back_point) and speed > 0.21 and (speed**2)*0.067 + 0.8 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 0.8:
             print("A")
             path.insert(0,last_point)
             (x, y) = path[0]
@@ -212,7 +212,7 @@ def main():
             drag_back_point = True
 
 
-        if drag_back_point and speed < 0.24:
+        if drag_back_point and speed < 0.2:
             print("B")
             path = path[1:]
             (x, y) = path[0]
@@ -223,7 +223,7 @@ def main():
         dist = distance((pos.x,pos.y),waypoint)
         speed_max = speed
 
-        if (dist < 0.07 and speed_max < 0.07):
+        if (dist < 0.08 and speed_max < 0.08):
             print("C")
             last_point = path[0]
             path = path[1:]
