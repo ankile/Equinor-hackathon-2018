@@ -86,7 +86,7 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
     # A 2d array of the least costs so far.
     (size_x, size_y) = graph.size()
     least_costs = [[float('inf') for x in range(size_x)] for y in range(size_y)]
-    least_costs[source[1]][source[0]]
+    least_costs[source[1]][source[0]] = 0
 
     while len(optimal_paths) < count and heap:
         # The current path with the least total cost
@@ -100,8 +100,8 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
             continue
 
         # If we've found a shorter path to the current edge, we'll simply discard this path
-        #if least_costs[y][x] < shortest.cost:
-        #    continue
+        if least_costs[y][x] < shortest.cost:
+            continue
 
         # Otherwise, we'll visit all the neighbours of `shortest`
         # and add all of those which result in a shorter path.
@@ -128,7 +128,7 @@ def shortest_path(graph, source, destination):
     for i in range(1, len(unfiltered) - 1):
         should_be_removed.append(unfiltered[i - 1][0] == unfiltered[i][0] == unfiltered[i + 1][0] or unfiltered[i - 1][1] == unfiltered[i][1] == unfiltered[i + 1][1])
 
-    should_be_removed.append(True)
+    should_be_removed.append(False)
 
     filtered = [unfiltered[i] for i in range(len(unfiltered)) if not should_be_removed[i]]
 
