@@ -133,7 +133,7 @@ def main():
 
 
 
-        if (not drag_back_point) and speed > 0.25 and (speed**2.0)*0.088 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.5:
+        if (not drag_back_point) and speed > 0.26 and (speed**2.0)*0.084 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.5:
             path.insert(0,last_point)
 
             (x, y) = path[0]
@@ -142,7 +142,7 @@ def main():
             drag_back_point = True
 
 
-        if drag_back_point and speed < 0.24:
+        if drag_back_point and speed < 0.25:
             path = path[1:]
             (x, y) = path[0]
             drone.set_target(x, y, 0)
@@ -160,7 +160,7 @@ def main():
             #speed_max = speed_in_x
         """
 
-        if (dist < 0.08 and speed_max < 0.08):
+        if (dist < 0.09 and speed_max < 0.09):
             last_point = path[0]
             path = path[1:]
             (x, y) = path[0]
