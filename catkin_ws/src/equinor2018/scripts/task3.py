@@ -31,6 +31,7 @@ def goalCallback(msg):
     global goals_initialized
     global graph
 
+    print("goalCallback...")
     if not goals_initialized and graph is not None:
         print("Set goals to: " + str(goals))
         goals = msg.poses
@@ -106,6 +107,7 @@ def is_at_goal(pos, thresh = 0.1):
 def main():
     global goals
     global goals_initialized
+    global graph
     global waiting_for_guess
     global current_pose
     global path
@@ -154,6 +156,7 @@ def main():
     while not rospy.is_shutdown():
         rate.sleep()
         # Do stuff
+        print("A")
         if waiting_for_guess:
             print("Waiting for guess")
             continue
@@ -168,11 +171,13 @@ def main():
         velocity = (cur_pos[0] - prev_pos[0], cur_pos[1] - prev_pos[1])
         prev_pos = cur_pos
 
+        print("B")
         if is_at_goal(pos):
             print("Is at goal!")
             waiting_for_guess = True
             should_guess.publish(1)
 
+        print("C")
         if not path or not goals:
             continue
 
