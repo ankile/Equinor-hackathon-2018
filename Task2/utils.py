@@ -22,7 +22,7 @@ def load_labeled_data():
 
 
 def load_unlabeled_data():
-    filenames = os.listdir("unlabeledData")
+    filenames = os.listdir("unlabeledData_modified")
     filenames = sorted(filenames, key=lambda x: int(os.path.splitext(x)[0]))
     return [cv2.imread(img) for img in filenames]
 

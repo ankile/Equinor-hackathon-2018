@@ -1,5 +1,6 @@
 .catkin_workspace
 .idea/*
+*.pyc
 build/
 devel/
 install/

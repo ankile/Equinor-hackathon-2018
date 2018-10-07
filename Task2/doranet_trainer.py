@@ -40,7 +40,7 @@ def shuffle(images, labels):
 
 batch_size = 64
 num_classes = 9
-epochs = 12
+epochs = 24
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -48,7 +48,7 @@ img_rows, img_cols = 28, 28
 # the data, shuffled
 
 #images, labels = load_labeled_data("cropped")
-im_test, la_test = load_labeled_data("selflabeledcropped")
+im_test, la_test = load_labeled_data("labeledData")
 
 #labels = [labels[i]-1 for i in range(len(labels))]
 la_test = [la_test[i]-1 for i in range(len(la_test))]
@@ -75,13 +75,13 @@ print(im_test.shape[0], 'test samples')
 la_test = keras.utils.to_categorical(la_test, num_classes)
 
 # Reload model
-model = keras.models.load_model('DoraNet/doranet.h5')
+model = keras.models.load_model('DoraNet/mnist_without_zero.h5')
 
 
 model.fit(im_test, la_test,
           batch_size=batch_size,
           epochs=epochs,
-          verbose=0, validation_data=None)
+          verbose=1, validation_data=None)
 model.save('DoraNet/doranet_enhanced.h5')
 
 score = model.evaluate(im_test, la_test, verbose=0)

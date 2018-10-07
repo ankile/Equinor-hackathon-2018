@@ -60,6 +60,3 @@ def block_until_armed_and_offboard():
         if last_state.mode == "OFFBOARD" and last_state.armed:
             break
         rate.sleep()
-
-
-

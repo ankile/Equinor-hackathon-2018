@@ -21,7 +21,7 @@ class ManhattanGraph:
         (size_x, size_y) = self.size()
         (x, y) = node
         coords = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
-        diagcoords = [(x + dx, y + dy) for dx in [-1, 1] for dy in [-1, 1] if self.grid[y + dy][x] == self.grid[y][x + dx] and self.grid[y+dy][x] in [0, '\x00']]
+        diagcoords = []#[(x + dx, y + dy) for dx in [-1, 1] for dy in [-1, 1] if self.grid[y + dy][x] == self.grid[y][x + dx] and self.grid[y+dy][x] in [0, '\x00']]
 
         return [(x, y) for (x, y) in coords if 0 <= x < size_x and 0 <= y < size_y and (self.grid[y][x] == 0 or self.grid[y][x] == '\x00')]
 
@@ -66,7 +66,11 @@ def are_parallell(p0, p1, p2):
     dot = lambda a, b: a[0] * b[0] + a[1] * b[1]
     v1 = normalize(p1[0] - p0[0], p1[1] - p0[1])
     v2 = normalize(p2[0] - p1[0], p2[1] - p1[1])
-    return abs(v1[0] - v2[0]) < epsilon and abs(v1[1] - v2[1]) < epsilon
+    return (v1[0] == v2[0] == 0 or v1[1] == v2[1] == 0)
+    #return abs(v1[0] - v2[0]) < epsilon and abs(v1[1] - v2[1]) < epsilon
+
+def ring_around(pos):
+    return [(pos[0] + dx, pos[1] + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1]]
 
 def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_factor = 1):
     """
@@ -85,7 +89,7 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
     # A 2d array of the least costs so far.
     (size_x, size_y) = graph.size()
     least_costs = [[float('inf') for x in range(size_x)] for y in range(size_y)]
-    least_costs[source[1]][source[0]]
+    least_costs[source[1]][source[0]] = 0
 
     while len(optimal_paths) < count and heap:
         # The current path with the least total cost
@@ -99,15 +103,16 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
             continue
 
         # If we've found a shorter path to the current edge, we'll simply discard this path
-        #if least_costs[y][x] < shortest.cost:
-        #    continue
+        if least_costs[y][x] < shortest.cost:
+            continue
 
         # Otherwise, we'll visit all the neighbours of `shortest`
         # and add all of those which result in a shorter path.
         for node in graph.adjacents_to(shortest.node):
             edge_cost = graph.cost(shortest.node, node)
             cost_scaling = 1 if shortest.prev is None or are_parallell(shortest.prev.node, shortest.node, node) else 10
-            path = shortest.appending(node, cost_scaling * edge_cost)
+            dst_scaling = 1 + 20*len([a for a in ring_around(node) if a in ['\x01', 1]])
+            path = shortest.appending(node, dst_scaling * edge_cost)
             (x1, y1) = path.node
 
             if path.cost < least_costs[y1][x1] * exploration_factor:
@@ -127,7 +132,7 @@ def shortest_path(graph, source, destination):
     for i in range(1, len(unfiltered) - 1):
         should_be_removed.append(unfiltered[i - 1][0] == unfiltered[i][0] == unfiltered[i + 1][0] or unfiltered[i - 1][1] == unfiltered[i][1] == unfiltered[i + 1][1])
 
-    should_be_removed.append(True)
+    should_be_removed.append(False)
 
     filtered = [unfiltered[i] for i in range(len(unfiltered)) if not should_be_removed[i]]
 

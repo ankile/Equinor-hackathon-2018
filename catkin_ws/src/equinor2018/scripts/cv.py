@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+import glob
+import os
+
 import rospy
 
-import numpy as np
-import matplotlib.pyplot as plt
-import array
-import copy
+
+from dora_main import predict
 
 from std_msgs.msg import Int8
 from geometry_msgs.msg import PoseStamped
@@ -20,10 +21,10 @@ class ThreeChannelImage:
 
     def __init__(self):
         self.listener()
-        self.data = None
         self.dim = (0, 0)
         self.channels = 3
         self.bridge = CvBridge()
+        self.image = None
 
     def callback(self, msg):
         self.image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
@@ -40,14 +41,25 @@ def positionCallback(msg):
     current_pose = msg
 
 
+should_guess = False
+
+def shouldguessCallback(msg):
+    print("callback")
+    global should_guess
+    should_guess = True
+
 def computer_vision():
+    global should_guess
+
+
     guess = rospy.Publisher("/guess", Int8, queue_size=1)
 
     rospy.init_node("cv_node", anonymous=True)
     rospy.Subscriber("mavros/local_position/pose", PoseStamped, positionCallback)
+    rospy.Subscriber("/should_guess", Int8, shouldguessCallback)
 
     three_channel_image = ThreeChannelImage()
-    should_guess = False
+
 
     rate = rospy.Rate(1)
 
@@ -58,15 +70,22 @@ def computer_vision():
             position.y
             image
         """
-
+        print('should guess:', should_guess)
         if should_guess:
-            guess.publish(1)
+            print("should guess now")
+            if three_channel_image.image is not None:
+                prediction = predict(three_channel_image.image)
+                guess.publish(prediction)
+            else:
+                print("no image to predict")
+            should_guess = False
 
         rate.sleep()
 
 
 if __name__ == '__main__':
     try:
+        print("helloe from main")
         computer_vision()
     except rospy.ROSInterruptException:
         pass
