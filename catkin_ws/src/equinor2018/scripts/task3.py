@@ -73,13 +73,18 @@ def guessed_callback(msg):
     dst = (int(goal.position.x), int(goal.position.y))
 
     path = shortest_path(graph, src, dst)
+    print("Path(0) = " + str(path))
 
     last_point = src
+
+    (r0, p0, y0) = tf.transformations.euler_from_quaternion(
+        [goal.orientation.x, goal.orientation.y, goal.orientation.z,
+         goal.orientation.w])
 
     path[-1] = (goal.position.x, goal.position.y)
     print("Path: " + str(path))
     (x, y) = path[0]
-    drone.set_target(x, y, 0)
+    drone.set_target(x, y, y0)
     #goal_updated = False
     print("Target set to " + str(x) + ", " + str(y))
 
