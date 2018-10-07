@@ -15,6 +15,11 @@ goals = PoseArray()  # geometry_msgs::PoseArray
 goals_updated = False
 """
 
+def distance(p0, p1):
+    (x0, y0) = (p0[0], p0[1])
+    (x1, y1) = (p1[0], p1[1])
+    return ((x0 - x1)**2 + (y0 - y1)**2) ** 0.5
+
 
 class AutoPilot:
     def __init__(self, graph):
@@ -27,6 +32,9 @@ class AutoPilot:
         self.velocity = None
         self.prev_pos = None
         self.pos = None
+
+        self.drag_back_point = False
+        self.last_point = (1, 1)
 
     def drone_pose_callback(self, pose_stamped):
         self.prev_pos = self.pos
@@ -62,7 +70,66 @@ class AutoPilot:
             self.path = shortest_path(self.graph, self.pos, self.remaining_goals[0])
 
     def tick(self):
-        pass
+        speed = distance(self.prev_pos, self.pos) * 30
+        speed_in_x = abs(self.prev_pos[0] - self.pos[0]) * 30
+        speed_in_y = abs(self.prev_pos[1] - self.pos[1]) * 30
+
+        """
+        if goal_updated:
+            print ("Goal updated")
+            src = (int(pos.x), int(pos.y))
+            dst = (int(goal.x), int(goal.y))
+
+            path = shortest_path(graph, src, dst)
+            last_point = src
+            # path = insert_break_points(path)
+            path[-1] = (goal.x, goal.y)
+            print("Path: " + str(path))
+            (x, y) = path[0]
+            drone.set_target(x, y, 0)
+            goal_updated = False
+            print("Target set to " + str(x) + ", " + str(y))
+        """
+
+        if not self.path or not self.goals:
+            return
+
+        waypoint = self.path[0]
+        print("pos = " + str((self.pos[0], self.pos[1])))
+        print("distance = " + str(distance(self.pos, waypoint)))
+
+        if (not self.drag_back_point) and speed > 0.21 and (speed ** 2) * 0.108 > distance(self.pos, waypoint) and distance(self.pos, waypoint) > 1.65:
+            self.path.insert(0, self.last_point)
+
+            (x, y) = self.path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            self.drag_back_point = True
+
+        if self.drag_back_point and speed < 0.12:
+            self.path = self.path[1:]
+            (x, y) = self.path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            self.drag_back_point = False
+
+        dist = distance(self.pos, waypoint)
+        speed_max = speed
+        if waypoint[0] == self.last_point[0]:  # going in y direction
+            dist = abs(self.pos[1] - waypoint[0])
+            speed_max = speed_in_y
+        else:  # going in x direction
+            dist = abs(self.pos[0] - waypoint[1])
+            speed_max = speed_in_x
+
+        if (dist < 0.06 and speed_max < 0.06):
+            self.last_point = self.path[0]
+            self.path = self.path[1:]
+            (x, y) = self.path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            self.drag_back_point = False
+
 
 """
 def dronePoseCallback(msg):
