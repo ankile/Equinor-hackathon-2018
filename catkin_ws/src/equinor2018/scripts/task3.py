@@ -42,8 +42,8 @@ class AutoPilot:
 
         # We'll only update the velocity if we have enough samples to do so
         if self.prev_pos is not None:
-            (x0, y0) = (self.prev_pos.x, self.prev_pos.y)
-            (x1, y1) = (self.pos.x, self.pos.y)
+            (x0, y0) = self.prev_pos
+            (x1, y1) = self.pos
             self.velocity = (x1 - x0, y1 - y0)
 
     def goals_callback(self, pose_array):
