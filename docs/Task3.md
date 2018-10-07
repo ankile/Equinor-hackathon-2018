@@ -18,7 +18,7 @@ In addition to integrating your computer vision algorithm with ROS, you will als
 
 ### Useful variables
 
-`current_pose` is identicle to the variable in `navigation.cpp`.
+`current_pose` is identical to the variable in `navigation.cpp`.
 
 `three_channel_image` is an object of the class defined in `cv.py`. This object holds the newest image from the drones camera feed. To access the image use `three_channel_image.data`.
 
