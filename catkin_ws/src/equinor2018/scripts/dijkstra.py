@@ -69,6 +69,9 @@ def are_parallell(p0, p1, p2):
     return (v1[0] == v2[0] == 0 or v1[1] == v2[1] == 0)
     #return abs(v1[0] - v2[0]) < epsilon and abs(v1[1] - v2[1]) < epsilon
 
+def ring_around(pos):
+    return [(pos[0] + dx, pos[1] + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1]]
+
 def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_factor = 1):
     """
     :param graph: A graph to traverse
@@ -108,7 +111,8 @@ def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_
         for node in graph.adjacents_to(shortest.node):
             edge_cost = graph.cost(shortest.node, node)
             cost_scaling = 1 if shortest.prev is None or are_parallell(shortest.prev.node, shortest.node, node) else 10
-            path = shortest.appending(node, cost_scaling * edge_cost)
+            dst_scaling = 1 + len([a for a in ring_around(node) if a in ['\x01', 1]])
+            path = shortest.appending(node, dst_scaling * cost_scaling * edge_cost)
             (x1, y1) = path.node
 
             if path.cost < least_costs[y1][x1] * exploration_factor:
