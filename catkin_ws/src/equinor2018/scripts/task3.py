@@ -38,7 +38,7 @@ class AutoPilot:
 
     def drone_pose_callback(self, pose_stamped):
         self.prev_pos = self.pos
-        self.pos = pose_stamped.pose.position
+        self.pos = (pose_stamped.pose.position.x, pose_stamped.pose.position.y)
 
         # We'll only update the velocity if we have enough samples to do so
         if self.prev_pos is not None:
@@ -49,7 +49,7 @@ class AutoPilot:
     def goals_callback(self, pose_array):
         if pose_array != self.initial_goals:
             self.initial_goals = pose_array.poses[:]
-            self.remaining_goals = pose_array.poses[:]
+            self.remaining_goals = pose_array.poses [:]
             self.path = shortest_path(self.graph, self.pos, self.initial_goals[0])
         pass
 
