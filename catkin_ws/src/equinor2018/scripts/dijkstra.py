@@ -66,7 +66,8 @@ def are_parallell(p0, p1, p2):
     dot = lambda a, b: a[0] * b[0] + a[1] * b[1]
     v1 = normalize(p1[0] - p0[0], p1[1] - p0[1])
     v2 = normalize(p2[0] - p1[0], p2[1] - p1[1])
-    return abs(v1[0] - v2[0]) < epsilon and abs(v1[1] - v2[1]) < epsilon
+    return (v1[0] == v2[0] == 0 or v1[1] == v2[1] == 0)
+    #return abs(v1[0] - v2[0]) < epsilon and abs(v1[1] - v2[1]) < epsilon
 
 def unfiltered_shortest_path(graph, source, destination, count = 1, exploration_factor = 1):
     """
