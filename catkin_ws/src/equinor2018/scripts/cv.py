@@ -61,9 +61,6 @@ def computer_vision():
     three_channel_image = ThreeChannelImage()
 
 
-    filename = "/home/morgan/PycharmProjects/hackathon_team_1/Task2/unlabeledData/340.jpg"
-
-    three_channel_image.image = cv2.imread(filename)
     rate = rospy.Rate(1)
 
     while not rospy.is_shutdown():
