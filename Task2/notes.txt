@@ -1,5 +1,6 @@
 Spørsmål:
-- Får man alle goals på starten av oppgave 3?
+- Må man levere predictions i den rekkefølge man får de inn?
+
 
 
 Idéer presentasjon
