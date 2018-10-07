@@ -93,7 +93,7 @@ def test_prediction_accuracy(images, labels):
         else:
             errors.append((labels[i], int(prediction)))
 
-        accuracy = float(correct) / total
+    accuracy = float(correct) / total
     print(correct, total, accuracy)
     elapsed = (datetime.datetime.now() - start).total_seconds()
     print("Elapsed time: ", elapsed)
@@ -131,6 +131,6 @@ def scramble_csv():
 
 
 if __name__ == '__main__':
-    images = load_unlabeled_data()
-    write_predictions_to_csv(images)
-    scramble_csv()
+    images, labels = load_labeled_data()
+    test_prediction_accuracy(images, labels)
+    #scramble_csv()
