@@ -39,10 +39,11 @@ def positionCallback(msg):
     current_pose = msg
 
 
+should_guess = False
+
 
 def computer_vision():
-
-    should_guess = False
+    global should_guess
 
     def shouldguessCallback(msg):
         print("callback")
@@ -71,7 +72,6 @@ def computer_vision():
             print("should guess now")
             prediction = predict(three_channel_image.data)
             guess.publish(prediction)
-            global should_guess
             should_guess = False
 
         rate.sleep()
