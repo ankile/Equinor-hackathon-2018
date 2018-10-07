@@ -54,7 +54,7 @@ def computer_vision():
     rospy.Subscriber("/should_guess", Int8, shouldguessCallback)
 
     three_channel_image = ThreeChannelImage()
-
+    #three_channel_image.data = cv2.imread()
     rate = rospy.Rate(1)
 
     while not rospy.is_shutdown():
