@@ -2,7 +2,7 @@
 import rospy
 
 
-from Task2.dora_main import predict
+from dora_main import predict
 
 from std_msgs.msg import Int8
 from geometry_msgs.msg import PoseStamped
