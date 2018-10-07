@@ -13,6 +13,7 @@ path = []
 goals_initialized = False
 waiting_for_guess = False
 graph = None
+last_point = (1,1)
 
 def distance(p0, p1):
     (x0, y0) = (p0[0], p0[1])
@@ -47,7 +48,7 @@ def goalCallback(msg):
         print("Path: " + str(path))
         (x, y) = path[0]
         drone.set_target(x, y, 0)
-        goal_updated = False
+        #goal_updated = False
         print("Target set to " + str(x) + ", " + str(y))
         goals_initialized = True
 
@@ -55,6 +56,7 @@ def guessed_callback(msg):
     global goals
     global waiting_for_guess
     global current_pose
+    global last_point
 
     print("Guessed: " + str(msg))
     # Remove the current goal from the list of goals
@@ -70,6 +72,9 @@ def guessed_callback(msg):
     dst = (int(goal.position.x), int(goal.position.y))
 
     path = shortest_path(graph, src, dst)
+
+    last_point = src
+
     path[-1] = (goal.position.x, goal.position.y)
     print("Path: " + str(path))
     (x, y) = path[0]
@@ -189,17 +194,16 @@ def main():
 
 
 
-        if (not drag_back_point) and speed > 0.21 and (speed**2)*0.108 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.65:
+        if (not drag_back_point) and speed > 0.32 and (speed**2)*0.063 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.5:
             print("A")
             path.insert(0,last_point)
-
             (x, y) = path[0]
             drone.set_target(x, y, 0)
             print("Target set to ", x, y)
             drag_back_point = True
 
 
-        if drag_back_point and speed < 0.12:
+        if drag_back_point and speed < 0.31:
             print("B")
             path = path[1:]
             (x, y) = path[0]
@@ -207,20 +211,9 @@ def main():
             print("Target set to ", x, y)
             drag_back_point = False
 
-        dist = distance((pos.x, pos.y), waypoint)
-        speed_max = speed
-        if waypoint[0] == last_point[0]: #going in y direction
+
+        if (dist < 0.06 and speed_max < 0.06):
             print("C")
-            dist = abs(pos.y - waypoint[0])
-            speed_max = speed_in_y
-        else: #going in x direction
-            print("D")
-            dist = abs(pos.x - waypoint[1])
-            speed_max = speed_in_x
-
-
-        if (dist < 0.07 and speed_max < 0.07):
-            print("E")
             last_point = path[0]
             path = path[1:]
             (x, y) = path[0]
