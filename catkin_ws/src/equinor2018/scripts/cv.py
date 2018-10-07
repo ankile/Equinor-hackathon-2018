@@ -12,7 +12,6 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
 current_pose = None
-should_guess = False
 
 
 class ThreeChannelImage:
@@ -40,8 +39,12 @@ def positionCallback(msg):
     current_pose = msg
 
 
+should_guess = False
+
 
 def computer_vision():
+    global should_guess
+
     def shouldguessCallback(msg):
         print("callback")
         global should_guess
@@ -57,8 +60,6 @@ def computer_vision():
 
     rate = rospy.Rate(1)
 
-    global should_guess
-
     while not rospy.is_shutdown():
         """
         Useful variables in scope:
@@ -66,6 +67,7 @@ def computer_vision():
             position.y
             image
         """
+        print('should guess:', should_guess)
         if should_guess:
             print("should guess now")
             prediction = predict(three_channel_image.data)
