@@ -12,6 +12,7 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
 current_pose = None
+should_guess = False
 
 
 class ThreeChannelImage:
@@ -42,6 +43,8 @@ def positionCallback(msg):
 
 def computer_vision():
     def shouldguessCallback(msg):
+        print("callback")
+        global should_guess
         should_guess = True
 
     guess = rospy.Publisher("/guess", Int8, queue_size=1)
@@ -54,7 +57,6 @@ def computer_vision():
 
     rate = rospy.Rate(1)
 
-    should_guess = False
     while not rospy.is_shutdown():
         """
         Useful variables in scope:
@@ -63,8 +65,10 @@ def computer_vision():
             image
         """
         if should_guess:
+            print("should guess now")
             prediction = predict(three_channel_image.data)
             guess.publish(prediction)
+            global should_guess
             should_guess = False
 
         rate.sleep()
@@ -72,6 +76,7 @@ def computer_vision():
 
 if __name__ == '__main__':
     try:
+        print("helloe from main")
         computer_vision()
     except rospy.ROSInterruptException:
         pass
