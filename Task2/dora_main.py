@@ -19,8 +19,3 @@ def predict(image):
     if image is None:
         return rand.randint(1, 9)
     return predict_image(image)
-
-
-filename = glob.glob("labeledData/7/385.jpg")
-image = cv2.imread(filename[0])
-print(predict(image))
