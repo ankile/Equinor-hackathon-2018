@@ -30,6 +30,7 @@ def goalCallback(msg):
     global goals
     global goals_initialized
     global graph
+    global path
 
     print("goalCallback...")
     if not goals_initialized and graph is not None:
