@@ -117,6 +117,7 @@ def main():
     global waiting_for_guess
     global current_pose
     global path
+    global last_point
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
 
@@ -211,6 +212,8 @@ def main():
             print("Target set to ", x, y)
             drag_back_point = False
 
+        dist = distance((pos.x,pos.y),waypoint)
+        speed_max = speed
 
         if (dist < 0.06 and speed_max < 0.06):
             print("C")
