@@ -48,6 +48,7 @@ class AutoPilot:
 
     def goals_callback(self, pose_array):
         if pose_array != self.initial_goals and self.pos is not None:
+            print("Poses: " + str(pose_array.poses[:]))
             self.initial_goals = pose_array.poses[:]
             self.remaining_goals = pose_array.poses [:]
             (x, y) = self.pos
