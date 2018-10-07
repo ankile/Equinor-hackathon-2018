@@ -1,6 +1,6 @@
 import glob
 import math
-import os
+import random as rand
 
 import cv2
 import numpy as np
@@ -26,7 +26,7 @@ def load_labeled_data():
 
 
 def load_unlabeled_data():
-    filenames = glob.glob("unlabeledData/*.jpg")
+    filenames = glob.glob("unlabeledData_modified/*.jpg")
     filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
     return [cv2.imread(img) for img in filenames]
 
@@ -68,7 +68,7 @@ def process_image(img):
             cnt = contours.pop()
     except IndexError:
         print('img:', img)
-        return None
+        return rand.randint(1, 9)
 
     x, y, w, h = cv2.boundingRect(cnt)
 
