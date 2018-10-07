@@ -2,8 +2,8 @@ import glob
 import random as rand
 
 import cv2
-from process_images import process_image
-from test_predictions import write_predictions_to_csv, predict_image
+from .process_images import process_image
+from .test_predictions import write_predictions_to_csv, predict_image
 
 
 # images = load_unlabeled_data()
