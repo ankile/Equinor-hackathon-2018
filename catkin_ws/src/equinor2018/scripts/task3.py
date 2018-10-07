@@ -49,8 +49,7 @@ def goalCallback(msg):
         drone.set_target(x, y, 0)
         goal_updated = False
         print("Target set to " + str(x) + ", " + str(y))
-
-    goals_initialized = goals_initialized or goals != msg.poses
+        goals_initialized = True
 
 def guessed_callback(msg):
     global goals
