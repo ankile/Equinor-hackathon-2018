@@ -26,7 +26,7 @@ def load_labeled_data():
 
 
 def load_unlabeled_data():
-    filenames = glob.glob("unlabeledData/*.jpg")
+    filenames = glob.glob("unlabeledData_modified/*.jpg")
     filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
     return [cv2.imread(img) for img in filenames]
 
@@ -67,7 +67,6 @@ def process_image(img):
         if cv2.boundingRect(cnt)[2] * cv2.boundingRect(cnt)[3] == len(img) * len(img[0]):
             cnt = contours.pop()
     except IndexError:
-        print('img:', img)
         return None
 
     x, y, w, h = cv2.boundingRect(cnt)

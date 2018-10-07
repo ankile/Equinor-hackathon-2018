@@ -104,11 +104,11 @@ def test_prediction_accuracy(images, labels):
         f.write(' '.join(predictions) + ' ')
 
 
-def write_predictions_to_csv(images):
-    images = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images])
+def write_predictions_to_csv(images, to_file):
+    # images = np.array([cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) for image in images])
     predictions = [str(np.argmax(predictions) + 1) for predictions in predict(images)]
 
-    with open('predictions_old.csv', 'w') as f:
+    with open(to_file, 'w') as f:
         f.write("predictions ")
         f.write(' '.join(predictions))
 
