@@ -57,12 +57,13 @@ def guessed_callback(msg):
     global current_pose
 
     print("Guessed: " + str(msg))
+    # Remove the current goal from the list of goals
+    goals = goals[1:]
 
     if not goals:
         print("No more goals")
         return
 
-    goals = goals[1:]
     goal = goals[0]
     print ("Goal updated")
     src = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
