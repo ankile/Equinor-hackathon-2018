@@ -152,8 +152,14 @@ def main():
         dist = distance((pos.x, pos.y), waypoint)
         speed_max = speed
 
+        distance_to_next = distance(waypoint,path[1])
+        speed_var = 0.12
+        dist_var = 0.09
+        if distance_to_next >= 4:
+            speed_var = 0.08
+            dist_var = 0.08
 
-        if (dist < 0.09 and speed_max < 0.13):
+        if (dist < dist_var and speed_max < speed_var):
             last_point = path[0]
             path = path[1:]
             (x, y) = path[0]
