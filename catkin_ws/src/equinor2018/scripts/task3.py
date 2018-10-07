@@ -78,10 +78,10 @@ def guessed_callback(msg):
 
     last_point = src
 
-    print("yaw: " + str(y0))
     (r0, p0, y0) = tf.transformations.euler_from_quaternion(
         [goal.orientation.x, goal.orientation.y, goal.orientation.z,
          goal.orientation.w])
+    print("yaw: " + str(y0))
 
     path[-1] = (goal.position.x, goal.position.y)
     print("Path: " + str(path))
