@@ -78,6 +78,7 @@ def guessed_callback(msg):
 
     last_point = src
 
+    print("yaw: " + str(y0))
     (r0, p0, y0) = tf.transformations.euler_from_quaternion(
         [goal.orientation.x, goal.orientation.y, goal.orientation.z,
          goal.orientation.w])
@@ -201,7 +202,13 @@ def main():
         print("pos = " + str((pos.x, pos.y)))
         print("distance = " + str(distance((pos.x, pos.y), waypoint)))
 
-
+        dist = distance((pos.x, pos.y), waypoint)
+        s1 = 0.18
+        if dist > 3:
+            x = dist
+            if x > 9:
+                x = 9
+            s1 += (x - 3)*0.03
 
         if (not drag_back_point) and speed > 0.21 and (speed**2)*0.067 + 0.8 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 0.8:
             print("A")
@@ -220,7 +227,7 @@ def main():
             print("Target set to ", x, y)
             drag_back_point = False
 
-        dist = distance((pos.x,pos.y),waypoint)
+
         speed_max = speed
 
         if (dist < 0.08 and speed_max < 0.08):
