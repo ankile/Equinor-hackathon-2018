@@ -157,7 +157,7 @@ def main():
     while not rospy.is_shutdown():
         rate.sleep()
         # Do stuff
-        print("A")
+        #print("A")
         if waiting_for_guess:
             print("Waiting for guess")
             continue
@@ -172,13 +172,13 @@ def main():
         velocity = (cur_pos[0] - prev_pos[0], cur_pos[1] - prev_pos[1])
         prev_pos = cur_pos
 
-        print("B")
+        #print("B")
         if is_at_goal(pos):
             print("Is at goal!")
             waiting_for_guess = True
             should_guess.publish(1)
 
-        print("C")
+        #print("C")
         if not path or not goals:
             continue
 
@@ -190,6 +190,7 @@ def main():
 
 
         if (not drag_back_point) and speed > 0.21 and (speed**2)*0.108 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.65:
+            print("A")
             path.insert(0,last_point)
 
             (x, y) = path[0]
@@ -199,6 +200,7 @@ def main():
 
 
         if drag_back_point and speed < 0.12:
+            print("B")
             path = path[1:]
             (x, y) = path[0]
             drone.set_target(x, y, 0)
@@ -208,14 +210,17 @@ def main():
         dist = distance((pos.x, pos.y), waypoint)
         speed_max = speed
         if waypoint[0] == last_point[0]: #going in y direction
+            print("C")
             dist = abs(pos.y - waypoint[0])
             speed_max = speed_in_y
         else: #going in x direction
+            print("D")
             dist = abs(pos.x - waypoint[1])
             speed_max = speed_in_x
 
 
         if (dist < 0.07 and speed_max < 0.07):
+            print("E")
             last_point = path[0]
             path = path[1:]
             (x, y) = path[0]
