@@ -2,14 +2,16 @@ import glob
 import random as rand
 
 import cv2
-from .process_images import process_image
-from .test_predictions import write_predictions_to_csv, predict_image
+from process_images import process_image
+from test_predictions import write_predictions_to_csv, predict_image
 
 
 # images = load_unlabeled_data()
 
 def dora_main(images, to_file):
     for i, image in enumerate(images):
+        if i % 10 == 0:
+            print 'Image: %s' % i
         images[i] = process_image(image)
     write_predictions_to_csv(images, to_file)
 
