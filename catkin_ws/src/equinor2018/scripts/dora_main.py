@@ -9,4 +9,3 @@ def predict(image):
     if image is None:
         return rand.randint(1, 9)
     return predict_image(image)
-
