@@ -112,7 +112,7 @@ def main():
 
     # Create subscriber for position and goal
     rospy.Subscriber('/mavros/local_position/pose', PoseStamped, dronePoseCallback)
-    rospy.Subscriber('/goal', Pose, goalCallback)
+    rospy.Subscriber('/goals', PoseArray, goalCallback)
     rospy.Subscriper('/guess', Int8, guessed_callback)
     should_guess = rospy.Publisher('/should_guess', Int8)
 
@@ -167,10 +167,11 @@ def main():
         prev_pos = cur_pos
 
         if is_at_goal(pos):
+            print("Is at goal!")
             waiting_for_guess = True
             should_guess.publish(1)
 
-        if not path or not goal:
+        if not path or not goals:
             continue
 
 
