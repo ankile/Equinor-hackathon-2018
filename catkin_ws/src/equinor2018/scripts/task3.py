@@ -38,7 +38,7 @@ class AutoPilot:
 
     def drone_pose_callback(self, pose_stamped):
         self.prev_pos = self.pos
-        self.pos = pose_stamped
+        self.pos = pose_stamped.pose.position
 
         # We'll only update the velocity if we have enough samples to do so
         if self.prev_pos is not None:
