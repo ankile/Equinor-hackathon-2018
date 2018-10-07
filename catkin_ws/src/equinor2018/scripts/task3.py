@@ -39,11 +39,11 @@ def goalCallback(msg):
 
         print ("Goal updated")
         src = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
-        dst = (int(goals[0].x), int(goals[0].y))
+        dst = (int(goals[0].position.x), int(goals[0].position.y))
 
         path = shortest_path(graph, src, dst)
         # path = insert_break_points(path)
-        path[-1] = (goals[0].x, goals[0].y)
+        path[-1] = (goals[0].position.x, goals[0].position.y)
         print("Path: " + str(path))
         (x, y) = path[0]
         drone.set_target(x, y, 0)
@@ -66,10 +66,10 @@ def guessed_callback(msg):
     goal = goals[0]
     print ("Goal updated")
     src = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
-    dst = (int(goal.x), int(goal.y))
+    dst = (int(goal.position.x), int(goal.position.y))
 
     path = shortest_path(graph, src, dst)
-    path[-1] = (goal.x, goal.y)
+    path[-1] = (goal.position.x, goal.position.y)
     print("Path: " + str(path))
     (x, y) = path[0]
     drone.set_target(x, y, 0)
