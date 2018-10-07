@@ -102,7 +102,7 @@ def is_at_goal(pos, thresh = 0.1):
     if not goals:
         return False
 
-    return ((goals[0].x - pos.x)**2 + (goals[0].y - pos.y)**2) ** 0.5 < thresh
+    return ((goals[0].position.x - pos.x)**2 + (goals[0].position.y - pos.y)**2) ** 0.5 < thresh
 
 
 def main():
