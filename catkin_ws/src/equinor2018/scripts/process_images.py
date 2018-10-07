@@ -67,7 +67,6 @@ def process_image(img):
         if cv2.boundingRect(cnt)[2] * cv2.boundingRect(cnt)[3] == len(img) * len(img[0]):
             cnt = contours.pop()
     except IndexError:
-        print('img:', img)
         return None
 
     x, y, w, h = cv2.boundingRect(cnt)

@@ -1,17 +1,7 @@
-import glob
-import os
-import cv2
-import numpy as np
 import random as rand
 
 from process_images import process_image
-from test_predictions import write_predictions_to_csv, predict_image, predict
-
-
-def dora_main(images):
-    for i, image in enumerate(images):
-        images[i] = process_image(image)
-    write_predictions_to_csv(images)
+from test_predictions import write_predictions_to_csv, predict_image
 
 
 def predict(image):
