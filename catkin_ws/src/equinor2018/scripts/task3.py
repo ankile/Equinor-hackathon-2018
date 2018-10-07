@@ -187,7 +187,7 @@ def main():
         prev_pos = cur_pos
 
         #print("B")
-        if is_at_goal(pos):
+        if is_at_goal(pos) and speed < 0.3:
             print("Is at goal!")
             waiting_for_guess = True
             should_guess.publish(1)
@@ -206,11 +206,11 @@ def main():
         s1 = 0.18
         if dist > 3:
             x = dist
-            if x > 9:
-                x = 9
-            s1 += (x - 3)*0.03
+            if x > 10:
+                x = 10
+            s1 += (x - 3)*0.02
 
-        if (not drag_back_point) and speed > 0.21 and (speed**2)*0.067 + 0.8 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 0.8:
+        if (not drag_back_point) and speed > s1 and (speed**2)*0.067 + 0.9 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 0.8:
             print("A")
             path.insert(0,last_point)
             (x, y) = path[0]
@@ -219,7 +219,7 @@ def main():
             drag_back_point = True
 
 
-        if drag_back_point and speed < 0.2:
+        if drag_back_point and speed < s1:
             print("B")
             path = path[1:]
             (x, y) = path[0]
