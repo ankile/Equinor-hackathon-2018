@@ -57,6 +57,8 @@ def computer_vision():
 
     rate = rospy.Rate(1)
 
+    global should_guess
+
     while not rospy.is_shutdown():
         """
         Useful variables in scope:
@@ -68,7 +70,6 @@ def computer_vision():
             print("should guess now")
             prediction = predict(three_channel_image.data)
             guess.publish(prediction)
-            global should_guess
             should_guess = False
 
         rate.sleep()
