@@ -12,7 +12,6 @@ import cv2
 from cv_bridge import CvBridge, CvBridgeError
 
 current_pose = None
-should_guess = False
 
 
 class ThreeChannelImage:
@@ -42,6 +41,9 @@ def positionCallback(msg):
 
 
 def computer_vision():
+
+    should_guess = False
+
     def shouldguessCallback(msg):
         print("callback")
         global should_guess
@@ -65,7 +67,6 @@ def computer_vision():
             image
         """
         print('should guess:', should_guess)
-        global should_guess
         if should_guess:
             print("should guess now")
             prediction = predict(three_channel_image.data)
