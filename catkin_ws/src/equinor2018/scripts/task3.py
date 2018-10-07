@@ -52,7 +52,7 @@ class AutoPilot:
             self.initial_goals = pose_array.poses[:]
             self.remaining_goals = pose_array.poses [:]
             (x, y) = self.pos
-            (x1, y1) = (self.initial_goals[0].position.x, self.initial_goals.goals[0].position.y)
+            (x1, y1) = (self.initial_goals[0].position.x, self.initial_goals[0].position.y)
             self.path = shortest_path(self.graph, (int(x), int(y)), self.initial_goals[0])
         pass
 
