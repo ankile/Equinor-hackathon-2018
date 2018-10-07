@@ -183,6 +183,7 @@ def main():
             print("Is at goal!")
             waiting_for_guess = True
             should_guess.publish(1)
+            continue
 
         #print("C")
         if not path or not goals:
@@ -195,7 +196,7 @@ def main():
 
 
 
-        if (not drag_back_point) and speed > 0.32 and (speed**2)*0.063 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.5:
+        if (not drag_back_point) and speed > 0.32 and (speed**2)*0.067 + 0.1 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.5:
             print("A")
             path.insert(0,last_point)
             (x, y) = path[0]
