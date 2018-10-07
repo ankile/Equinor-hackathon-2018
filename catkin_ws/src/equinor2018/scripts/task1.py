@@ -153,7 +153,7 @@ def main():
         speed_max = speed
 
         distance_to_next = distance(waypoint,path[1])
-        speed_var = 0.12
+        speed_var = 0.11
         dist_var = 0.09
         if distance_to_next >= 4:
             speed_var = 0.08
