@@ -46,7 +46,7 @@ def predict_image(image):
     x = x.astype('float32')
     x /= 255
 
-    model = load_model('DoraNet/doranet_enhanced.h5')
+    model = load_model(os.getcwd() + "/src/equinor2018/scripts/DoraNet/doranet_enhanced.h5")
     out = model.predict(x)
     return np.argmax(out) + 1
 
@@ -63,7 +63,7 @@ def predict(images):
 
     # perform the prediction
     from keras.models import load_model
-    model = load_model('DoraNet/doranet_enhanced.h5')
+    model = load_model(os.getcwd() + "/src/equinor2018/scripts/DoraNet/doranet_enhanced.h5")
     return model.predict(x, batch_size=32)
 
 
