@@ -29,6 +29,7 @@ def dronePoseCallback(msg):
 def goalCallback(msg):
     global goals
     global goals_initialized
+    global graph
 
     if not goals_initialized and graph is not None:
         print("Set goals to: " + str(goals))
@@ -39,7 +40,6 @@ def goalCallback(msg):
         dst = (int(goals[0].x), int(goals[0].y))
 
         path = shortest_path(graph, src, dst)
-        last_point = src
         # path = insert_break_points(path)
         path[-1] = (goal.x, goal.y)
         print("Path: " + str(path))
@@ -53,6 +53,7 @@ def goalCallback(msg):
 def guessed_callback(msg):
     global goals
     global waiting_for_guess
+    global current_pose
 
     print("Guessed: " + str(msg))
 
@@ -107,6 +108,7 @@ def main():
     global goals_initialized
     global waiting_for_guess
     global current_pose
+    global path
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
 
@@ -114,7 +116,7 @@ def main():
     rospy.Subscriber('/mavros/local_position/pose', PoseStamped, dronePoseCallback)
     rospy.Subscriber('/goals', PoseArray, goalCallback)
     rospy.Subscriber('/guess', Int8, guessed_callback)
-    should_guess = rospy.Publisher('/should_guess', Int8)
+    should_guess = rospy.Publisher('/should_guess', Int8, queue_size = 1)
 
     # Create map service client
     getMap = rospy.ServiceProxy('/GlobalMap', GlobalMap)
