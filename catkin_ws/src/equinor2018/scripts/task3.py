@@ -57,6 +57,7 @@ def guessed_callback(msg):
     global waiting_for_guess
     global current_pose
     global last_point
+    global path
 
     print("Guessed: " + str(msg))
     # Remove the current goal from the list of goals
