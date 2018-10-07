@@ -15,6 +15,7 @@ goals_initialized = False
 waiting_for_guess = False
 graph = None
 last_point = (1,1)
+yaw = 0
 
 def distance(p0, p1):
     (x0, y0) = (p0[0], p0[1])
@@ -33,6 +34,7 @@ def goalCallback(msg):
     global goals_initialized
     global graph
     global path
+    global yaw
 
     print("goalCallback...")
     if not goals_initialized and graph is not None:
@@ -48,7 +50,7 @@ def goalCallback(msg):
         path[-1] = (goals[0].position.x, goals[0].position.y)
         print("Path: " + str(path))
         (x, y) = path[0]
-        drone.set_target(x, y, 0)
+        drone.set_target(x, y, yaw)
         #goal_updated = False
         print("Target set to " + str(x) + ", " + str(y))
         goals_initialized = True
@@ -59,6 +61,7 @@ def guessed_callback(msg):
     global current_pose
     global last_point
     global path
+    global yaw
 
     print("Guessed: " + str(msg))
     # Remove the current goal from the list of goals
@@ -81,12 +84,13 @@ def guessed_callback(msg):
     (r0, p0, y0) = tf.transformations.euler_from_quaternion(
         [goal.orientation.x, goal.orientation.y, goal.orientation.z,
          goal.orientation.w])
+    yaw = y0
     print("yaw: " + str(y0))
 
     path[-1] = (goal.position.x, goal.position.y)
     print("Path: " + str(path))
     (x, y) = path[0]
-    drone.set_target(x, y, y0)
+    drone.set_target(x, y, yaw)
     #goal_updated = False
     print("Target set to " + str(x) + ", " + str(y))
 
@@ -126,6 +130,7 @@ def main():
     global current_pose
     global path
     global last_point
+    global yaw
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
 
@@ -214,7 +219,7 @@ def main():
             print("A")
             path.insert(0,last_point)
             (x, y) = path[0]
-            drone.set_target(x, y, 0)
+            drone.set_target(x, y, yaw)
             print("Target set to ", x, y)
             drag_back_point = True
 
@@ -223,7 +228,7 @@ def main():
             print("B")
             path = path[1:]
             (x, y) = path[0]
-            drone.set_target(x, y, 0)
+            drone.set_target(x, y, yaw)
             print("Target set to ", x, y)
             drag_back_point = False
 
@@ -235,7 +240,7 @@ def main():
             last_point = path[0]
             path = path[1:]
             (x, y) = path[0]
-            drone.set_target(x, y, 0)
+            drone.set_target(x, y, yaw)
             print("Target set to ", x, y)
             drag_back_point = False
 
