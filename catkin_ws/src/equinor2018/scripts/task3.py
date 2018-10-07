@@ -7,13 +7,12 @@ from std_msgs.msg import Int8
 from geometry_msgs.msg import PoseStamped, PoseArray
 from ascend_msgs.srv import GlobalMap
 
-"""
 current_pose = PoseStamped()  # geometry_msgs::PoseStamped
-
-# Contains .poses
-goals = PoseArray()  # geometry_msgs::PoseArray
-goals_updated = False
-"""
+goals = []  # geometry_msgs::PoseArray()
+path = []
+goals_initialized = False
+waiting_for_guess = False
+graph = None
 
 def distance(p0, p1):
     (x0, y0) = (p0[0], p0[1])
@@ -21,120 +20,7 @@ def distance(p0, p1):
     return ((x0 - x1)**2 + (y0 - y1)**2) ** 0.5
 
 
-class AutoPilot:
-    def __init__(self, graph):
-        self.initial_goals = PoseArray()
-        self.remaining_goals = PoseArray()
-        self.graph = graph
-        self.is_waiting_for_guess = False
 
-        self.path = None
-        self.velocity = None
-        self.prev_pos = None
-        self.pos = None
-
-        self.drag_back_point = False
-        self.last_point = (1, 1)
-
-    def drone_pose_callback(self, pose_stamped):
-        self.prev_pos = self.pos
-        self.pos = (pose_stamped.pose.position.x, pose_stamped.pose.position.y)
-
-        # We'll only update the velocity if we have enough samples to do so
-        if self.prev_pos is not None:
-            (x0, y0) = self.prev_pos
-            (x1, y1) = self.pos
-            self.velocity = (x1 - x0, y1 - y0)
-
-    def goals_callback(self, pose_array):
-        if pose_array != self.initial_goals and self.pos is not None:
-            print("Poses: " + str(pose_array.poses[:]))
-            self.initial_goals = pose_array.poses[:]
-            self.remaining_goals = pose_array.poses [:]
-            (x, y) = self.pos
-            (x1, y1) = (self.initial_goals[0].position.x, self.initial_goals[0].position.y)
-            self.path = shortest_path(self.graph, (int(x), int(y)), self.initial_goals[0])
-        pass
-
-    def is_at_subgoal(self):
-        # We're at a goal iff path == []
-        if self.path is not None and not self.path:
-            print("Currently at a subgoal")
-            return True
-
-        return False
-
-    def has_guessed_callback(self, response):
-        print("Got response: " +  str(response))
-        self.is_waiting_for_guess = False
-        self.remaining_goals = self.remaining_goals[1:]
-
-        if self.remaining_goals:
-            self.path = shortest_path(self.graph, self.pos, self.remaining_goals[0])
-
-    def tick(self):
-        speed = distance(self.prev_pos, self.pos) * 30
-        speed_in_x = abs(self.prev_pos[0] - self.pos[0]) * 30
-        speed_in_y = abs(self.prev_pos[1] - self.pos[1]) * 30
-
-        """
-        if goal_updated:
-            print ("Goal updated")
-            src = (int(pos.x), int(pos.y))
-            dst = (int(goal.x), int(goal.y))
-
-            path = shortest_path(graph, src, dst)
-            last_point = src
-            # path = insert_break_points(path)
-            path[-1] = (goal.x, goal.y)
-            print("Path: " + str(path))
-            (x, y) = path[0]
-            drone.set_target(x, y, 0)
-            goal_updated = False
-            print("Target set to " + str(x) + ", " + str(y))
-        """
-
-        if not self.path or not self.goals:
-            return
-
-        waypoint = self.path[0]
-        print("pos = " + str((self.pos[0], self.pos[1])))
-        print("distance = " + str(distance(self.pos, waypoint)))
-
-        if (not self.drag_back_point) and speed > 0.21 and (speed ** 2) * 0.108 > distance(self.pos, waypoint) and distance(self.pos, waypoint) > 1.65:
-            self.path.insert(0, self.last_point)
-
-            (x, y) = self.path[0]
-            drone.set_target(x, y, 0)
-            print("Target set to ", x, y)
-            self.drag_back_point = True
-
-        if self.drag_back_point and speed < 0.12:
-            self.path = self.path[1:]
-            (x, y) = self.path[0]
-            drone.set_target(x, y, 0)
-            print("Target set to ", x, y)
-            self.drag_back_point = False
-
-        dist = distance(self.pos, waypoint)
-        speed_max = speed
-        if waypoint[0] == self.last_point[0]:  # going in y direction
-            dist = abs(self.pos[1] - waypoint[0])
-            speed_max = speed_in_y
-        else:  # going in x direction
-            dist = abs(self.pos[0] - waypoint[1])
-            speed_max = speed_in_x
-
-        if (dist < 0.06 and speed_max < 0.06):
-            self.last_point = self.path[0]
-            self.path = self.path[1:]
-            (x, y) = self.path[0]
-            drone.set_target(x, y, 0)
-            print("Target set to ", x, y)
-            self.drag_back_point = False
-
-
-"""
 def dronePoseCallback(msg):
     global current_pose
     current_pose = msg
@@ -142,12 +28,62 @@ def dronePoseCallback(msg):
 
 def goalCallback(msg):
     global goals
-    global goals_updated
+    global goals_initialized
 
-    if goals != msg:
-        goals = msg
-        goals_updated = True
-"""
+    if not goals_initialized and graph is not None:
+        print("Set goals to: " + str(goals))
+        goals = msg.poses
+
+        print ("Goal updated")
+        src = (int(pos.x), int(pos.y))
+        dst = (int(goals[0].x), int(goals[0].y))
+
+        path = shortest_path(graph, src, dst)
+        last_point = src
+        # path = insert_break_points(path)
+        path[-1] = (goal.x, goal.y)
+        print("Path: " + str(path))
+        (x, y) = path[0]
+        drone.set_target(x, y, 0)
+        goal_updated = False
+        print("Target set to " + str(x) + ", " + str(y))
+
+    goals_initialized = goals_initialized or goals != msg.poses
+
+def guessed_callback(msg):
+    global goals
+    global waiting_for_guess
+
+    print("Guessed: " + str(msg))
+
+    if not goals:
+        print("No more goals")
+        return
+
+    goals = goals[1:]
+    goal = goals[0]
+    print ("Goal updated")
+    src = (int(current_pose.pose.position.x), int(current_pose.pose.position.y))
+    dst = (int(goal.x), int(goal.y))
+
+    path = shortest_path(graph, src, dst)
+    path[-1] = (goal.x, goal.y)
+    print("Path: " + str(path))
+    (x, y) = path[0]
+    drone.set_target(x, y, 0)
+    #goal_updated = False
+    print("Target set to " + str(x) + ", " + str(y))
+
+    waiting_for_guess = False
+
+
+
+
+def distance(p0, p1):
+    (x0, y0) = (p0[0], p0[1])
+    (x1, y1) = (p1[0], p1[1])
+    return ((x0 - x1)**2 + (y0 - y1)**2) ** 0.5
+
 
 def parseMap(msg):
     num_rows = msg.dim[0].size
@@ -157,13 +93,28 @@ def parseMap(msg):
     world_map = [[msg.data[row * num_col + col] for col in range(num_col)] for row in range(num_rows)]
     return world_map
 
+def is_at_goal(pos, thresh = 0.1):
+    global goals
+
+    if not goals:
+        return False
+
+    return ((goals[0].x - pos.x)**2 + (goals[0].y - pos.y)**2) ** 0.5 < thresh
+
 
 def main():
+    global goals
+    global goals_initialized
+    global waiting_for_guess
+    global current_pose
     # Init ROS node
     rospy.init_node('task1', anonymous=True)
 
-    # Create a topic which the we'll publish to when we're in position.
-    should_guess = rospy.Publisher('/should_guess', Int8, queue_size = 1)
+    # Create subscriber for position and goal
+    rospy.Subscriber('/mavros/local_position/pose', PoseStamped, dronePoseCallback)
+    rospy.Subscriber('/goal', Pose, goalCallback)
+    rospy.Subscriper('/guess', Int8, guessed_callback)
+    should_guess = rospy.Publisher('/should_guess', Int8)
 
     # Create map service client
     getMap = rospy.ServiceProxy('/GlobalMap', GlobalMap)
@@ -177,45 +128,92 @@ def main():
 
     # Get map as 2D list
     world_map = parseMap(raw_map)
-
-    # Construct a graph from the map
+    # Construct a graph from the world map
     graph = ManhattanGraph(world_map)
-    # Initialize the auto-pilot
-    auto_pilot = AutoPilot(graph)
-
-    # Create subscriber for guess, pose and goals
-    rospy.Subscriber('/guess', Int8, auto_pilot.has_guessed_callback)
-    rospy.Subscriber('/mavros/local_position/pose', PoseStamped, auto_pilot.drone_pose_callback)
-    rospy.Subscriber('/goals', PoseArray, auto_pilot.goals_callback)
-    print("Created AutoPilot and subscribed it for /guess, .../pose and /goals")
+    # The current path
+    #path = []#endurance_track(graph)
 
     # Initialize drone
     drone.init()
 
     # Arm and set offboard
     drone.block_until_armed_and_offboard()
-
+    print("Hello!")
     # Takeoff
     drone.takeoff()
+    prev_pos = (current_pose.pose.position.x, current_pose.pose.position.y)
 
     # Create rate limiter
     rate = rospy.Rate(30)
+
+    drag_back_point = False
+    last_point = (1,1)
+
     while not rospy.is_shutdown():
         rate.sleep()
-
-        # If we're waiting from a response from the CV system, we'll simply wait
-        if auto_pilot.is_waiting_for_guess:
+        # Do stuff
+        if waiting_for_guess:
+            print("Waiting for guess")
             continue
 
-        # If we're at a sub_coal, we'll initialize the CV system, and block until we get a response
-        if auto_pilot.is_at_subgoal():
-            print("Currently at sub-goal, waiting for response...")
-            auto_pilot.is_waiting_for_guess = True
+        pos = current_pose.pose.position
+
+        cur_pos = (pos.x, pos.y)
+        speed = distance(prev_pos, cur_pos) * 30
+        speed_in_x = abs(prev_pos[0] - cur_pos[0]) * 30
+        speed_in_y = abs(prev_pos[1] - cur_pos[1]) * 30
+
+        velocity = (cur_pos[0] - prev_pos[0], cur_pos[1] - prev_pos[1])
+        prev_pos = cur_pos
+
+        if is_at_goal(pos):
+            waiting_for_guess = True
             should_guess.publish(1)
+
+        if not path or not goal:
             continue
 
-        # Otherwise, we'll set the waypoints as specified by the auto-pilot
-        auto_pilot.tick()
+
+        waypoint = path[0]
+        print("pos = " + str((pos.x, pos.y)))
+        print("distance = " + str(distance((pos.x, pos.y), waypoint)))
+
+
+
+        if (not drag_back_point) and speed > 0.21 and (speed**2)*0.108 > distance((pos.x, pos.y), waypoint) and distance((pos.x, pos.y), waypoint) > 1.65:
+            path.insert(0,last_point)
+
+            (x, y) = path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            drag_back_point = True
+
+
+        if drag_back_point and speed < 0.12:
+            path = path[1:]
+            (x, y) = path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            drag_back_point = False
+
+        dist = distance((pos.x, pos.y), waypoint)
+        speed_max = speed
+        if waypoint[0] == last_point[0]: #going in y direction
+            dist = abs(pos.y - waypoint[0])
+            speed_max = speed_in_y
+        else: #going in x direction
+            dist = abs(pos.x - waypoint[1])
+            speed_max = speed_in_x
+
+
+        if (dist < 0.07 and speed_max < 0.07):
+            last_point = path[0]
+            path = path[1:]
+            (x, y) = path[0]
+            drone.set_target(x, y, 0)
+            print("Target set to ", x, y)
+            drag_back_point = False
+
 
 
 if __name__ == '__main__':
