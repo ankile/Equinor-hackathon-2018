@@ -151,11 +151,12 @@ def main():
 
         dist = distance((pos.x, pos.y), waypoint)
         speed_max = speed
+
         if waypoint[0] == last_point[0]: #going in y direction
-            dist = abs(pos.y - waypoint[0])
+            dist = abs(pos.y - waypoint[1])
             speed_max = speed_in_y
         else: #going in x direction
-            dist = abs(pos.x - waypoint[1])
+            dist = abs(pos.x - waypoint[0])
             speed_max = speed_in_x
 
 
