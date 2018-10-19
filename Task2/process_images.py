@@ -25,12 +25,6 @@ def load_labeled_data():
     return images, labels
 
 
-def load_unlabeled_data():
-    filenames = glob.glob("unlabeledData_modified/*.jpg")
-    filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
-    return [cv2.imread(img) for img in filenames]
-
-
 def process_image(img):
     y_dim = len(img)
     x_dim = len(img[0])
@@ -57,6 +51,8 @@ def process_image(img):
     cutoff = 30
     _, img = cv2.threshold(img, cutoff, 255, cv2.THRESH_BINARY)
 
+    cv2.imwrite('1_1.jpg', img)
+
     # Find contours
     _, contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -70,6 +66,12 @@ def process_image(img):
         return None
 
     x, y, w, h = cv2.boundingRect(cnt)
+
+    img1 = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+
+    cv2.rectangle(img1, (x, y), (x + w, y + h), (0, 255, 0), 1)
+
+    cv2.imwrite('2_1.jpg', img1)
 
     min_x, max_x = x, x + w
     min_y, max_y = y, y + h
@@ -92,16 +94,24 @@ def process_image(img):
 
     img = np.pad(img, ((pad_y_l, pad_y_r), (pad_x_l, pad_x_r)), 'constant', constant_values=255)
 
+    cv2.imwrite('3_1.jpg', img)
+
     return img
 
 
+def load_unlabeled_data():
+    filenames = glob.glob("0_1.jpg")
+    # filenames = sorted(filenames, key=lambda x: int(x.split('/')[1].split('.')[0]))
+    return [cv2.imread(img) for img in filenames]
+
+
 if __name__ == '__main__':
-    images, labels = load_labeled_data()
-    # images = load_unlabeled_data()
+    # images, labels = load_labeled_data()
+    images = load_unlabeled_data()
     for i, image in enumerate(images):
-        if i % 10 == 0:
-            print('Image:', i, 'Label:', labels[i])
+        # if i % 10 == 0:
+        #     print('Image:', i, 'Label:', labels[i])
         processed_image = process_image(image)
-        if processed_image is not None:
-            cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i + 1000), processed_image)
+        # if processed_image is not None:
+        #     cv2.imwrite('selflabeledCropped/{}/{}.jpg'.format(labels[i], i + 1000), processed_image)
 # cv2.imwrite('unlabeledCropped/' + str(i) + '.jpg', processed_image)
